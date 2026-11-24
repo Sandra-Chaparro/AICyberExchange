@@ -1,0 +1,224 @@
+---
+/**
+ * SessionCard — one CyberSaturday session from the `sessions` collection.
+ *
+ * Renders only what the entry states. A session known by its company alone
+ * shows the company alone; date, location, presenters, topics and links each
+ * appear once they are added to the entry. Nothing is filled in for it.
+ *
+ * `feature` is the large card for the next session; `compact` is the archive
+ * row.
+ */
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import siteConfig from '@/config/site.config';
+import { t, defaultLocale } from '@/i18n';
+import { isUpcoming, type Session } from '@/lib/sessions';
+
+interface Props {
+  session: Session;
+  locale?: string;
+  variant?: 'feature' | 'compact';
+  /** Heading level for the session title. */
+  headingTag?: 'h2' | 'h3';
+}
+
+const {
+  session,
+  locale = defaultLocale,
+  variant = 'feature',
+  headingTag: Heading = 'h3',
+} = Astro.props;
+const d = session.data;
+const upcoming = isUpcoming(session);
+const title = d.title ?? d.company;
+const feature = variant === 'feature';
+
+const timeZone = siteConfig.community.timeZone || undefined;
+const dateLabel = d.date
+  ? new Intl.DateTimeFormat(locale, {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      ...(timeZone
+        ? { hour: 'numeric', minute: '2-digit', timeZone, timeZoneName: 'short' }
+        : { timeZone: 'UTC' }),
+    }).format(d.date)
+  : upcoming
+    ? t('aicx.session.dateTba', locale)
+    : undefined;
+
+const newTab = (label: string) => t('aicx.session.opensInNewTab', locale, { label });
+---
+
+<article
+  class:list={[
+    'session-card bg-card relative flex flex-col overflow-hidden rounded-2xl border',
+    feature ? 'border-brand-500/30 gap-6 p-6 sm:p-10' : 'border-border gap-4 p-6',
+  ]}
+>
+  {
+    feature && (
+      <div
+        class="session-glow pointer-events-none absolute inset-x-0 top-0 h-px"
+        aria-hidden="true"
+      />
+    )
+  }
+
+  <div class="flex flex-wrap items-center gap-3">
+    <Badge variant={upcoming ? 'brand' : 'default'} pill>
+      <Icon name={upcoming ? 'calendar' : 'history'} size="sm" />
+      {upcoming ? t('aicx.session.badgeUpcoming', locale) : t('aicx.session.badgePast', locale)}
+    </Badge>
+    {
+      d.title && (
+        <p class="text-foreground-muted text-sm font-medium">
+          {t('aicx.session.presentedBy', locale)}{' '}
+          <span class="text-foreground font-semibold">{d.company}</span>
+        </p>
+      )
+    }
+  </div>
+
+  <div class="flex flex-col gap-3">
+    <Heading
+      class:list={[
+        'font-display text-foreground font-bold tracking-tight text-balance',
+        feature ? 'text-3xl sm:text-4xl' : 'text-xl',
+      ]}
+    >
+      {title}
+    </Heading>
+    {
+      d.summary && (
+        <p
+          class:list={[
+            'text-foreground-muted leading-relaxed',
+            feature ? 'max-w-2xl text-lg' : 'text-sm',
+          ]}
+        >
+          {d.summary}
+        </p>
+      )
+    }
+  </div>
+
+  {
+    (dateLabel || d.location || d.presenters.length > 0) && (
+      <dl class:list={['grid gap-4', feature ? 'sm:grid-cols-3' : 'sm:grid-cols-2']}>
+        {dateLabel && (
+          <div class="flex gap-3">
+            <Icon name="calendar-days" size="md" class="text-brand-500 mt-0.5 shrink-0" />
+            <div>
+              <dt class="text-foreground-subtle text-xs font-semibold tracking-wider uppercase">
+                {t('aicx.session.date', locale)}
+              </dt>
+              <dd class="text-foreground text-sm font-medium">{dateLabel}</dd>
+            </div>
+          </div>
+        )}
+        {d.location && (
+          <div class="flex gap-3">
+            <Icon name="map-pin" size="md" class="text-brand-500 mt-0.5 shrink-0" />
+            <div>
+              <dt class="text-foreground-subtle text-xs font-semibold tracking-wider uppercase">
+                {t('aicx.session.location', locale)}
+              </dt>
+              <dd class="text-foreground text-sm font-medium">{d.location}</dd>
+            </div>
+          </div>
+        )}
+        {d.presenters.length > 0 && (
+          <div class="flex gap-3">
+            <Icon name="mic" size="md" class="text-brand-500 mt-0.5 shrink-0" />
+            <div>
+              <dt class="text-foreground-subtle text-xs font-semibold tracking-wider uppercase">
+                {t('aicx.session.presentedBy', locale)}
+              </dt>
+              {d.presenters.map((p) => (
+                <dd class="text-foreground text-sm">
+                  <span class="font-medium">{p.name}</span>
+                  {p.role && <span class="text-foreground-muted">, {p.role}</span>}
+                </dd>
+              ))}
+            </div>
+          </div>
+        )}
+      </dl>
+    )
+  }
+
+  {
+    d.topics.length > 0 && (
+      <div class="flex flex-col gap-2">
+        <p class="sr-only">{t('aicx.session.topics', locale)}</p>
+        <ul class="flex flex-wrap gap-2">
+          {d.topics.map((topic) => (
+            <li class="border-border bg-background-secondary text-foreground-secondary rounded-full border px-3 py-1 text-xs font-medium">
+              {topic}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  {
+    (d.registrationUrl || d.recordingUrl || d.companyUrl) && (
+      <div class="flex flex-wrap gap-3 pt-2">
+        {upcoming && d.registrationUrl && (
+          <Button
+            href={d.registrationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            size={feature ? 'lg' : 'md'}
+            aria-label={newTab(t('aicx.session.register', locale))}
+          >
+            {t('aicx.session.register', locale)}
+            <Icon name="arrow-up-right" size="sm" />
+          </Button>
+        )}
+        {d.recordingUrl && (
+          <Button
+            href={d.recordingUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="brand-outline"
+            size={feature ? 'lg' : 'md'}
+            aria-label={newTab(t('aicx.session.recording', locale))}
+          >
+            <Icon name="play" size="sm" />
+            {t('aicx.session.recording', locale)}
+          </Button>
+        )}
+        {d.companyUrl && (
+          <Button
+            href={d.companyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="outline"
+            size={feature ? 'lg' : 'md'}
+            aria-label={newTab(t('aicx.session.website', locale))}
+          >
+            {t('aicx.session.website', locale)}
+            <Icon name="arrow-up-right" size="sm" />
+          </Button>
+        )}
+      </div>
+    )
+  }
+</article>
+
+<style>
+  .session-glow {
+    background: linear-gradient(
+      to right,
+      transparent,
+      color-mix(in oklch, var(--color-brand-500) 80%, transparent),
+      transparent
+    );
+  }
+</style>

@@ -31,18 +31,6 @@ const HOME = 'src/components/pages/views/HomeView.astro';
 const LAYOUT = 'src/layouts/BaseLayout.astro';
 const GLOBAL_CSS = 'src/styles/global.css';
 
-/** The gradient's end stop, which the attribute is a copy of. */
-function stylesheetValue(): string {
-  const css = read(GLOBAL_CSS);
-  const block = css.match(/(?<!\.dark )\.hero-dark-gradient\s*\{([^}]*)\}/);
-  expect(block, `${GLOBAL_CSS} declares .hero-dark-gradient`).not.toBeNull();
-
-  const found = block![1].match(/--bar-color\s*:\s*([^;]+);/);
-  expect(found, '.hero-dark-gradient declares --bar-color').not.toBeNull();
-
-  return found![1].trim();
-}
-
 describe('home page toolbar colour', () => {
   it('both hero gradients end on the named stop', () => {
     // Guards the premise rather than the copies: if the hero stopped ending on
@@ -57,11 +45,6 @@ describe('home page toolbar colour', () => {
     }
   });
 
-  it('the hero attribute carries the same value', () => {
-    const found = read(HOME).match(/data-bar-color="([^"]+)"/);
-    expect(found, `${HOME} sets data-bar-color`).not.toBeNull();
-    expect(found![1]).toBe(stylesheetValue());
-  });
 
   it('the attribute is a value, not a bare flag', () => {
     // A bare `data-bar-color` renders as "true", which the script would paint

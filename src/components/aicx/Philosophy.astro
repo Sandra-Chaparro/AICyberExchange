@@ -1,0 +1,57 @@
+---
+/**
+ * Philosophy — "Learn. Demonstrate. Question. Connect." and the paragraphs
+ * behind it, from `aicx.philosophy`.
+ *
+ * The four words are set large and in sequence; the last sentence is set
+ * apart because it is the one the community is built on.
+ */
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { tData, defaultLocale } from '@/i18n';
+
+interface Props {
+  locale?: string;
+  badge: string;
+}
+
+const { locale = defaultLocale, badge } = Astro.props;
+const p = tData<{ words: string[]; paragraphs: string[]; closing: string }>(
+  'aicx.philosophy',
+  locale
+)!;
+---
+
+<div class="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-16">
+  <div class="flex flex-col gap-6" data-reveal>
+    <Badge variant="brand" pill class="self-start">
+      <Icon name="sparkles" size="sm" />
+      {badge}
+    </Badge>
+    <h2
+      class="font-display text-foreground text-4xl leading-[1.05] font-bold tracking-tight sm:text-5xl lg:text-6xl"
+    >
+      {
+        p.words.map((word, i) => (
+          <span
+            class:list={['block', i % 2 === 1 ? 'text-brand-600 dark:text-brand-400' : undefined]}
+          >
+            {word}.
+          </span>
+        ))
+      }
+    </h2>
+  </div>
+  <div class="flex flex-col gap-5" data-reveal data-reveal-delay="1">
+    {
+      p.paragraphs.map((text) => (
+        <p class="text-foreground-muted text-lg leading-relaxed">{text}</p>
+      ))
+    }
+    <p
+      class="border-brand-500 font-display text-foreground border-l-2 pl-5 text-xl leading-snug font-semibold text-balance"
+    >
+      {p.closing}
+    </p>
+  </div>
+</div>

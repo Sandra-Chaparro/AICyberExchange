@@ -1,0 +1,107 @@
+---
+/**
+ * SessionsView — past sessions and the companies that have presented.
+ *
+ * Shared by `/sessions` and `/<locale>/sessions`. Driven by the `sessions`
+ * collection: every past entry adds its company to the grid, and the archive
+ * below lists the entries that carry more than a company name — a date, a
+ * summary, presenters or a recording. Until one does, the archive stays out
+ * of the page rather than repeating the grid.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Hero } from '@/components/hero';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import SectionHeading from '@/components/aicx/SectionHeading.astro';
+import CompanyGrid from '@/components/aicx/CompanyGrid.astro';
+import SessionCard from '@/components/aicx/SessionCard.astro';
+import ClosingCta from '@/components/aicx/ClosingCta.astro';
+import type Dictionary from '@/i18n/en.json';
+import { tData, defaultLocale, localizedPath } from '@/i18n';
+import { getSessions, pastSessions, participatingCompanies } from '@/lib/sessions';
+import { getPresentLink } from '@/lib/community';
+
+interface Props {
+  locale?: string;
+}
+
+const { locale = defaultLocale } = Astro.props;
+const page = tData<(typeof Dictionary)['pages']['sessions']>('pages.sessions', locale)!;
+
+const sessions = await getSessions(locale);
+const companies = participatingCompanies(sessions);
+const archive = pastSessions(sessions).filter(
+  ({ data: d }) => d.title || d.summary || d.date || d.presenters.length > 0 || d.recordingUrl
+);
+---
+
+<PageLayout
+  title={page.meta.title}
+  description={page.meta.description}
+  footerBackground="secondary"
+>
+  <Hero layout="centered" size="sm" class="isolate pb-[var(--space-section-sm)]" showHeroHalo>
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="history" size="sm" />
+      {page.hero.badge}
+    </Badge>
+    <h1 slot="title" class="!text-4xl sm:!text-5xl lg:!text-6xl">{page.hero.title}</h1>
+    <p slot="description">{page.hero.description}</p>
+  </Hero>
+
+  {
+    companies.length > 0 && (
+      <section class="bg-background-secondary border-border border-t py-[var(--space-section-md)]">
+        <div class="mx-auto flex max-w-6xl flex-col gap-10 px-6">
+          <SectionHeading
+            badge={page.companies.badge}
+            icon="building-2"
+            heading={page.companies.heading}
+            lead={page.companies.lead}
+          />
+          <CompanyGrid companies={companies} locale={locale} />
+        </div>
+      </section>
+    )
+  }
+
+  {
+    archive.length > 0 && (
+      <section class="bg-background border-border border-t py-[var(--space-section-md)]">
+        <div class="mx-auto flex max-w-4xl flex-col gap-10 px-6">
+          <SectionHeading
+            badge={page.archive.badge}
+            icon="archive"
+            heading={page.archive.heading}
+          />
+          <div class="flex flex-col gap-4">
+            {archive.map((session) => (
+              <div data-reveal>
+                <SessionCard session={session} locale={locale} variant="compact" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section
+    class:list={[
+      'border-border border-t py-[var(--space-section-md)]',
+      archive.length > 0 ? 'bg-background-secondary' : 'bg-background',
+    ]}
+  >
+    <ClosingCta
+      locale={locale}
+      heading={page.cta.heading}
+      description={page.cta.description}
+      primary={{ label: page.cta.primary, ...getPresentLink(locale) }}
+      secondary={{
+        label: page.cta.secondary,
+        href: localizedPath('/upcoming', locale),
+        external: false,
+      }}
+    />
+  </section>
+</PageLayout>

@@ -1,0 +1,51 @@
+---
+/**
+ * ReasonGrid — a grid of icon, title and short description, for the "why
+ * attend" and "why present" lists and the smaller lists like them.
+ *
+ * Pass the items directly, or a dictionary key holding `{ items }`.
+ */
+import ProofTile from '@/components/ui/data-display/ProofTile/ProofTile.astro';
+import { tData, defaultLocale } from '@/i18n';
+
+interface Item {
+  icon?: string;
+  title: string;
+  description: string;
+}
+
+interface Props {
+  locale?: string;
+  /** Dictionary key of an object with an `items` array, e.g. `aicx.whyAttend`. */
+  source?: string;
+  items?: Item[];
+  /** Columns on wide screens. */
+  columns?: 2 | 3 | 4;
+  /** Number the tiles instead of showing icons. */
+  numbered?: boolean;
+}
+
+const { locale = defaultLocale, source, items: given, columns = 3, numbered = false } = Astro.props;
+const items = given ?? (source ? tData<{ items: Item[] }>(source, locale)?.items : undefined) ?? [];
+const cols = {
+  2: 'sm:grid-cols-2',
+  3: 'sm:grid-cols-2 lg:grid-cols-3',
+  4: 'sm:grid-cols-2 lg:grid-cols-4',
+}[columns];
+---
+
+<div class:list={['grid gap-4 sm:gap-6', cols]}>
+  {
+    items.map((item, i) => (
+      <ProofTile
+        icon={numbered ? undefined : item.icon}
+        number={numbered ? i + 1 : undefined}
+        title={item.title}
+        data-reveal
+        data-reveal-delay={i % columns || undefined}
+      >
+        {item.description}
+      </ProofTile>
+    ))
+  }
+</div>

@@ -23,7 +23,7 @@
  */
 import type { HTMLAttributes } from 'astro/types';
 import { cn } from '@/lib/cn';
-import { getNavItems, getLogoHref } from '@/config/nav.config';
+import { getNavItems, getLogoHref, headerCta, resolveNavItem } from '@/config/nav.config';
 import { headerVariants, headerInnerVariants } from './header.variants';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
@@ -97,7 +97,7 @@ const {
   nav,
   extraNav = [],
   showCta = false,
-  cta = { label: 'Start a project', href: '/contact' },
+  cta: ctaProp,
   actions = [],
   showSearch = true,
   showThemeToggle = true,
@@ -142,6 +142,9 @@ const defaultNav = getNavItems(locale).map((item) => ({
 }));
 const navItems: NavItem[] = nav || [...extraNav, ...defaultNav];
 const logoHref = getLogoHref(locale);
+// The call to action comes from `headerCta` in nav.config.ts unless a caller
+// passes its own, so its label translates and its href stays in the locale.
+const cta: NonNullable<Props['cta']> = ctaProp ?? resolveNavItem(headerCta, locale);
 const ctaHref = cta.href?.startsWith('#') && !isLandingPage ? `/${cta.href}` : cta.href;
 
 const hasLogoSlot = Astro.slots.has('logo');
@@ -254,11 +257,11 @@ const buttonId = `${menuId}-button`;
     {
       layout !== 'minimal' &&
         (hasNavSlot ? (
-          <nav class="hidden items-center gap-1 lg:flex" aria-label={t('nav.mainNav', locale)}>
+          <nav class="hidden items-center gap-1 xl:flex" aria-label={t('nav.mainNav', locale)}>
             <slot name="nav" />
           </nav>
         ) : (
-          <nav class="hidden items-center gap-1 lg:flex" aria-label={t('nav.mainNav', locale)}>
+          <nav class="hidden items-center gap-1 xl:flex" aria-label={t('nav.mainNav', locale)}>
             {navItems.map(({ label, href }) => (
               <a
                 href={href.startsWith('#') && !isLandingPage ? `/${href}` : href}
@@ -294,7 +297,7 @@ const buttonId = `${menuId}-button`;
                 modal itself stays mounted here at every size: the drawer row
                 clicks this (hidden) trigger. */}
             {showSearch && (
-              <div class="hidden lg:flex">
+              <div class="hidden xl:flex">
                 <SearchModal class={isFloating ? 'hdr-invert-text' : undefined} />
               </div>
             )}
@@ -306,19 +309,19 @@ const buttonId = `${menuId}-button`;
             )}
 
             {showThemeSelector && (
-              <div class="hidden lg:flex">
+              <div class="hidden xl:flex">
                 <ThemeSelectorDropdown class={isFloating ? 'hdr-invert-text' : undefined} />
               </div>
             )}
 
             {showLanguageSwitcher && (
-              <div class="hidden lg:flex">
+              <div class="hidden xl:flex">
                 <LanguageSwitcher class={isFloating ? 'hdr-invert-text' : undefined} alternates={languageAlternates} />
               </div>
             )}
 
             {showSocialLinks && siteConfig.socialLinks.length > 0 && (
-              <div class="hidden lg:flex items-center gap-0.5">
+              <div class="hidden xl:flex items-center gap-0.5">
                 {siteConfig.socialLinks.map((url) => {
                   const { icon, label } = getSocialIconData(url);
                   return (
@@ -358,12 +361,12 @@ const buttonId = `${menuId}-button`;
             ))}
 
             {showCta && (
-              <div class="hidden lg:flex">
+              <div class="hidden xl:flex">
                 <Button
                   size="sm"
                   href={ctaHref}
                   target={ctaHref?.startsWith('http') ? '_blank' : undefined}
-                  class={cn('hdr-cta-brand', isFloating ? 'hdr-invert-cta' : undefined)}
+                  class={cn('hdr-cta-brand whitespace-nowrap', isFloating ? 'hdr-invert-cta' : undefined)}
                 >
                   {cta.icon && <Icon name={cta.icon} size="sm" />}
                   {cta.label}
@@ -381,7 +384,7 @@ const buttonId = `${menuId}-button`;
             type="button"
             id={buttonId}
             class={cn(
-              'hdr-hamburger inline-flex items-center justify-center rounded-md p-2 lg:hidden',
+              'hdr-hamburger inline-flex items-center justify-center rounded-md p-2 xl:hidden',
               'text-foreground',
               'transition-colors',
               'focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none',
@@ -430,7 +433,7 @@ const buttonId = `${menuId}-button`;
         <div
           id={menuId}
           class={cn(
-            'hidden origin-top scale-y-0 opacity-0 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.12)] lg:hidden',
+            'hidden origin-top scale-y-0 opacity-0 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.12)] xl:hidden',
             isFloating
               ? 'rounded-b-2xl bg-background/95 backdrop-blur-xl'
               : 'border-border bg-background border-t'
@@ -444,7 +447,7 @@ const buttonId = `${menuId}-button`;
         <div
           id={menuId}
           class={cn(
-            'hidden origin-top scale-y-0 opacity-0 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.12)] lg:hidden',
+            'hidden origin-top scale-y-0 opacity-0 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.12)] xl:hidden',
             isFloating
               ? 'rounded-b-2xl bg-background/95 backdrop-blur-xl'
               : 'border-border bg-background border-t'
@@ -576,7 +579,7 @@ const buttonId = `${menuId}-button`;
   showMobileMenu && layout !== 'minimal' && (
     <div
       id={`${menuId}-backdrop`}
-      class="pointer-events-none fixed inset-0 z-40 opacity-0 transition-opacity duration-200 lg:hidden"
+      class="pointer-events-none fixed inset-0 z-40 opacity-0 transition-opacity duration-200 xl:hidden"
       aria-hidden="true"
     />
   )

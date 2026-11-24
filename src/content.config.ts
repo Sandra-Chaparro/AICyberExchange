@@ -176,6 +176,50 @@ const stack = defineCollection({
   }),
 });
 
+// Sessions collection — one Markdown file per CyberSaturday session.
+//
+// The same entry moves through its life without changing shape: announce it
+// with `status: upcoming`, a `date` and a `registrationUrl`; once it has run,
+// set `status: past` and add a `recordingUrl` if there is one. A session whose
+// date has passed is treated as past even while it still says `upcoming`, so a
+// stale announcement never sits on the Upcoming page.
+//
+// Only `company` is required. Every other field renders when it is set and is
+// left out when it is not, so an entry can say no more than is actually known.
+const sessions = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/sessions' }),
+  schema: z.object({
+    /** The company, startup or technology team presenting. */
+    company: z.string(),
+    /** Session title. Falls back to the company name when unset. */
+    title: z.string().optional(),
+    /** One or two sentences on what the session covers. */
+    summary: z.string().max(400).optional(),
+    status: z.enum(['upcoming', 'past']).default('past'),
+    /** Start date and time, ISO 8601, e.g. 2026-12-05T10:00:00-05:00. */
+    date: z.coerce.date().optional(),
+    /** Where it happens, e.g. "Online" or a venue for an in-person session. */
+    location: z.string().optional(),
+    presenters: z
+      .array(
+        z.object({
+          name: z.string(),
+          role: z.string().optional(),
+        })
+      )
+      .default([]),
+    /** Topic labels, ideally from the "What We Explore" areas. */
+    topics: z.array(z.string()).default([]),
+    companyUrl: z.url().optional(),
+    registrationUrl: z.url().optional(),
+    recordingUrl: z.url().optional(),
+    /** Sort position among sessions without a date. Lower comes first. */
+    order: z.number().default(99),
+    draft: z.boolean().default(false),
+    locale: localeSchema,
+  }),
+});
+
 export const collections = {
   blog,
   pages,
@@ -183,4 +227,5 @@ export const collections = {
   faqs,
   stack,
   projects,
+  sessions,
 };

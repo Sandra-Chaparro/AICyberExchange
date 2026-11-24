@@ -1,0 +1,9 @@
+---
+import UpcomingView from '@/components/pages/views/UpcomingView.astro';
+import { defaultLocale } from '@/i18n';
+
+// The default-locale route. Additional locales are served by
+// `src/pages/[locale]/upcoming.astro`, which renders the same view.
+---
+
+<UpcomingView locale={defaultLocale} />

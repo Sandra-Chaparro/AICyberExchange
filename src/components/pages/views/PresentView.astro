@@ -1,0 +1,152 @@
+---
+/**
+ * PresentView — "Present With Us", the page for companies, startups and
+ * technology teams.
+ *
+ * Shared by `/present` and `/<locale>/present`. Copy from `pages.present.*`
+ * and the shared `aicx.*` keys.
+ *
+ * Every benefit is phrased as an opportunity. The page makes no promise of
+ * customers or leads: what a session leads to depends on the conversations it
+ * starts, and a community that a company trusts is worth more to it than a
+ * claim it cannot check.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Hero } from '@/components/hero';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import SectionHeading from '@/components/aicx/SectionHeading.astro';
+import FormatSteps from '@/components/aicx/FormatSteps.astro';
+import AudienceGrid from '@/components/aicx/AudienceGrid.astro';
+import ReasonGrid from '@/components/aicx/ReasonGrid.astro';
+import ClosingCta from '@/components/aicx/ClosingCta.astro';
+import type Dictionary from '@/i18n/en.json';
+import { tData, defaultLocale, localizedPath } from '@/i18n';
+import { getContactLink } from '@/lib/community';
+
+interface Props {
+  locale?: string;
+}
+
+interface Step {
+  title: string;
+  description: string;
+}
+
+const { locale = defaultLocale } = Astro.props;
+const page = tData<(typeof Dictionary)['pages']['present']>('pages.present', locale)!;
+const apply = getContactLink('present', locale);
+const sessions = { href: localizedPath('/sessions', locale), external: false };
+---
+
+<PageLayout title={page.meta.title} description={page.meta.description} footerBackground="default">
+  <Hero layout="centered" size="md" class="isolate pb-[var(--space-section-sm)]" showHeroHalo>
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="building-2" size="sm" />
+      {page.hero.badge}
+    </Badge>
+    <h1 slot="title" class="!text-4xl sm:!text-5xl lg:!text-6xl">{page.hero.title}</h1>
+    <p slot="description">{page.hero.description}</p>
+    <Fragment slot="actions">
+      <Button size="lg" href={apply.href}>
+        {page.hero.primary}
+        <Icon name="arrow-right" size="sm" />
+      </Button>
+      <Button size="lg" variant="outline" href="#format" class="hero-btn-opaque">
+        {page.hero.secondary}
+        <Icon name="arrow-down" size="sm" />
+      </Button>
+    </Fragment>
+  </Hero>
+
+  <!-- Why present -->
+  <section class="bg-background-secondary border-border border-t py-[var(--space-section-md)]">
+    <div class="mx-auto flex max-w-6xl flex-col gap-10 px-6">
+      <SectionHeading
+        badge={page.why.badge}
+        icon="sparkles"
+        heading={page.why.heading}
+        lead={page.why.lead}
+      />
+      <ReasonGrid locale={locale} source="aicx.whyPresent" columns={3} />
+    </div>
+  </section>
+
+  <!-- Audience -->
+  <section class="bg-background border-border border-t py-[var(--space-section-md)]">
+    <div class="mx-auto flex max-w-6xl flex-col gap-10 px-6">
+      <SectionHeading
+        badge={page.audience.badge}
+        icon="users"
+        heading={page.audience.heading}
+        lead={page.audience.lead}
+      />
+      <AudienceGrid locale={locale} />
+    </div>
+  </section>
+
+  <!-- Format -->
+  <section
+    id="format"
+    class="bg-background-secondary border-border scroll-mt-20 border-t py-[var(--space-section-md)]"
+  >
+    <div class="mx-auto flex max-w-6xl flex-col gap-12 px-6">
+      <SectionHeading
+        badge={page.format.badge}
+        icon="route"
+        heading={page.format.heading}
+        lead={page.format.lead}
+      />
+      <FormatSteps locale={locale} />
+    </div>
+  </section>
+
+  <!-- Expectations -->
+  <section class="bg-background border-border border-t py-[var(--space-section-md)]">
+    <div class="mx-auto flex max-w-6xl flex-col gap-10 px-6">
+      <SectionHeading
+        badge={page.expectations.badge}
+        icon="presentation"
+        heading={page.expectations.heading}
+      />
+      <ReasonGrid items={page.expectations.items} columns={3} numbered />
+    </div>
+  </section>
+
+  <!-- How to apply -->
+  <section class="bg-background-secondary border-border border-t py-[var(--space-section-md)]">
+    <div class="mx-auto flex max-w-4xl flex-col gap-10 px-6">
+      <SectionHeading badge={page.steps.badge} icon="send" heading={page.steps.heading} />
+      <ol class="flex flex-col gap-4">
+        {
+          (page.steps.items as Step[]).map((step, i) => (
+            <li
+              class="border-border bg-card flex gap-5 rounded-2xl border p-6"
+              data-reveal
+              data-reveal-delay={i || undefined}
+            >
+              <span class="border-brand-500/30 bg-brand-500/10 font-display text-brand-600 dark:text-brand-400 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-base font-bold">
+                {i + 1}
+              </span>
+              <div class="flex flex-col gap-1">
+                <h3 class="font-display text-foreground text-lg font-semibold">{step.title}</h3>
+                <p class="text-foreground-muted">{step.description}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="bg-background border-border border-t py-[var(--space-section-md)]">
+    <ClosingCta
+      locale={locale}
+      heading={page.cta.heading}
+      description={page.cta.description}
+      primary={{ label: page.cta.primary, ...apply }}
+      secondary={{ label: page.cta.secondary, ...sessions }}
+    />
+  </section>
+</PageLayout>

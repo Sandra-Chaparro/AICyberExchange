@@ -201,6 +201,20 @@ export interface SiteConfig {
     /** Master switch — true by default; false hides the signup site-wide */
     enabled: boolean;
   };
+  /** Community links used by the calls to action across the site. */
+  community: {
+    /**
+     * Where "Join the Community" points: a path on this site or an external
+     * URL. External URLs open in a new tab.
+     */
+    joinUrl: string;
+    /**
+     * IANA time zone sessions are announced in, e.g. 'America/New_York'.
+     * Session times are shown only when this is set; without it a session
+     * shows its date alone, since the build server's zone may not be yours.
+     */
+    timeZone?: string;
+  };
   /**
    * Blog listing configuration. Counts that were previously hard-coded across
    * `lib/blog.ts` and the route files live here so they're tunable in one
@@ -265,45 +279,32 @@ const siteConfig: SiteConfig = {
   // import this file, uses the same values. Change them there.
   name: SITE_NAME,
   description:
-    'A free, fast Astro 7 starter theme to build anything on: 44 designed components, 8 colour themes, dark mode, and built-in i18n.',
-  tagline: 'Astro 7 starter theme to build anything on',
-  footerNote: 'Free & open source · MIT licensed',
+    'A community-driven professional forum connecting the people building emerging AI and cybersecurity technologies with the people learning, applying, and shaping them.',
+  tagline: 'Where AI, cybersecurity, and real-world innovation meet.',
+  footerNote: 'Home of CyberSaturdays',
   url: SITE_URL || SITE_URL_FALLBACK,
-  // Generated at build time from `name`, `tagline` and the brand colour below.
-  // Point this at a file in `public/` to use your own — it has to be a raster
-  // (PNG or JPEG): social platforms don't render SVG share images.
-  ogImage: '/og/default.png',
-  author: 'Hans Martens',
-  email: 'hello@hansmartens.dev',
-  address: {
-    street: '',
-    city: 'Amsterdam',
-    state: '',
-    zip: '',
-    country: 'the Netherlands',
-  },
-  socialLinks: [
-    'https://github.com/hansmartensdev',
-    'https://x.com/hansmartens_dev',
-    'https://www.linkedin.com/in/hansmartensdev',
-    'https://bsky.app/profile/hansmartensdev.bsky.social',
-  ],
+  // The full logo, from public/logo.jpeg, scaled to the 1200×630 that link
+  // previews (LinkedIn, Slack, X, iMessage) expect. Every page shares it.
+  ogImage: '/og-image.jpg',
+  author: 'AI & Cyber Exchange',
+  // The address the contact form delivers to, and the one shown on the
+  // contact page. Empty hides the email card; set it before deploying, or the
+  // contact form has nowhere to send messages.
+  email: '',
+  // Profile URLs (LinkedIn, Meetup, YouTube, X…). The icon is inferred from
+  // the URL. Shown in the footer and on the contact page.
+  socialLinks: [],
   header: {
     // Flip to `true` to show the social icons (incl. GitHub) in the header.
     showSocialLinks: false,
-  },
-  twitter: {
-    site: 'https://x.com/hansmartens_dev',
-    creator: '@hansmartens_dev',
   },
   verification: {
     google: GOOGLE_SITE_VERIFICATION,
     bing: BING_SITE_VERIFICATION,
   },
-  authorImage: '/avatar.svg',
   blogImageOverlay: true,
   effects: {
-    cursorTrail: true,
+    cursorTrail: false,
   },
   articleFeatures: {
     toc: {
@@ -358,9 +359,17 @@ const siteConfig: SiteConfig = {
     },
   },
   newsletter: {
-    // On by default: the form knows whether it has keys and says so itself,
-    // in dev only. Set RESEND_API_KEY and RESEND_AUDIENCE_ID to make it work.
-    enabled: true,
+    // Off until RESEND_API_KEY and RESEND_AUDIENCE_ID are set, so the footer
+    // never shows a signup that cannot accept an address.
+    enabled: false,
+  },
+  community: {
+    // Where "Join the Community" leads. Point it at the community's own
+    // channel (LinkedIn group, Meetup, Discord, mailing list…) once there is
+    // one; until then it opens the contact form with the subject filled in.
+    joinUrl: '/contact?topic=join',
+    // Set to show session start times, e.g. 'America/New_York'.
+    timeZone: '',
   },
   blog: {
     postsPerPage: 12,
@@ -373,9 +382,11 @@ const siteConfig: SiteConfig = {
   i18n: i18nConfig,
   branding: {
     logo: {
-      alt: 'Astro Rocket',
-      // image: '/logo.svg', // Optional: set to a file in public/ to use a custom logo image instead of the letter monogram.
-      imageUrl: '/favicon.svg',
+      alt: 'AI & Cyber Exchange',
+      // The icon from public/logo.jpeg, cropped square so it reads at header
+      // size. The full banner, wordmark included, is too wide for the slot.
+      image: '/logo-mark.png',
+      imageUrl: '/logo-mark.png',
     },
     favicon: {
       svg: '/favicon.svg',

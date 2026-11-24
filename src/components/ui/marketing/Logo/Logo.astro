@@ -58,6 +58,7 @@ const letter = letterProp ?? siteConfig.name.charAt(0).toUpperCase();
     class={cn(
       'inline-block shrink-0 object-contain',
       img,
+      radius,
       // Neutralise the brand-tint background the call sites pass for the
       // monogram badge (e.g. `bg-brand-600`) — a custom logo shouldn't sit on
       // a coloured square. The trailing class wins via tailwind-merge, while

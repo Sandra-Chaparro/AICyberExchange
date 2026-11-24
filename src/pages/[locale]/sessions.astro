@@ -1,0 +1,14 @@
+---
+import SessionsView from '@/components/pages/views/SessionsView.astro';
+import { getSecondaryLocales } from '@/i18n';
+
+// Locale-prefixed route (`/<locale>/sessions`). One page per non-default locale;
+// emits nothing when i18n is off.
+export function getStaticPaths() {
+  return getSecondaryLocales().map((locale) => ({ params: { locale } }));
+}
+
+const { locale } = Astro.params;
+---
+
+<SessionsView locale={locale} />

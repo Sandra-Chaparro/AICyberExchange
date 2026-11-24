@@ -1,0 +1,129 @@
+---
+/**
+ * UpcomingView — the next CyberSaturday, and any scheduled after it.
+ *
+ * Shared by `/upcoming` and `/<locale>/upcoming`. Reads `sessions` entries
+ * whose status is `upcoming` and whose date has not passed at build time.
+ * With none announced, the page says so and points to the community, rather
+ * than showing an empty slot.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Hero } from '@/components/hero';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import SectionHeading from '@/components/aicx/SectionHeading.astro';
+import SessionCard from '@/components/aicx/SessionCard.astro';
+import FormatSteps from '@/components/aicx/FormatSteps.astro';
+import ClosingCta from '@/components/aicx/ClosingCta.astro';
+import type Dictionary from '@/i18n/en.json';
+import { t, tData, defaultLocale, localizedPath } from '@/i18n';
+import { getSessions, upcomingSessions } from '@/lib/sessions';
+import { getJoinLink } from '@/lib/community';
+
+interface Props {
+  locale?: string;
+}
+
+const { locale = defaultLocale } = Astro.props;
+const page = tData<(typeof Dictionary)['pages']['upcoming']>('pages.upcoming', locale)!;
+
+const [next, ...later] = upcomingSessions(await getSessions(locale));
+const join = getJoinLink(locale);
+const joinAttrs = join.external
+  ? {
+      target: '_blank',
+      rel: 'noopener noreferrer',
+      'aria-label': t('aicx.session.opensInNewTab', locale, { label: page.empty.primary }),
+    }
+  : {};
+---
+
+<PageLayout title={page.meta.title} description={page.meta.description} footerBackground="default">
+  <Hero layout="centered" size="sm" class="isolate pb-[var(--space-section-sm)]" showHeroHalo>
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="calendar" size="sm" />
+      {page.hero.badge}
+    </Badge>
+    <h1 slot="title" class="!text-4xl sm:!text-5xl lg:!text-6xl">{page.hero.title}</h1>
+    <p slot="description">{page.hero.description}</p>
+  </Hero>
+
+  <section class="bg-background-secondary border-border border-t py-[var(--space-section-md)]">
+    <div class="mx-auto flex max-w-4xl flex-col gap-6 px-6">
+      {
+        next ? (
+          <div data-reveal>
+            <SessionCard session={next} locale={locale} headingTag="h2" />
+          </div>
+        ) : (
+          <Card variant="elevated" padding="lg" class="text-center" data-reveal>
+            <div class="mx-auto flex max-w-xl flex-col items-center gap-4 py-6">
+              <span class="bg-brand-500/10 text-brand-500 flex h-12 w-12 items-center justify-center rounded-2xl">
+                <Icon name="calendar-clock" size="lg" />
+              </span>
+              <h2 class="font-display text-foreground text-2xl font-semibold text-balance sm:text-3xl">
+                {page.empty.title}
+              </h2>
+              <p class="text-foreground-muted text-lg leading-relaxed">{page.empty.description}</p>
+              <div class="flex flex-col gap-3 pt-2 sm:flex-row">
+                <Button href={join.href} {...joinAttrs}>
+                  {page.empty.primary}
+                  <Icon name="arrow-right" size="sm" />
+                </Button>
+                <Button variant="brand-outline" href={localizedPath('/sessions', locale)}>
+                  {page.empty.secondary}
+                </Button>
+              </div>
+            </div>
+          </Card>
+        )
+      }
+
+      {
+        later.length > 0 && (
+          <div class="mt-10 flex flex-col gap-6">
+            <SectionHeading
+              badge={page.later.badge}
+              icon="calendar-days"
+              heading={page.later.heading}
+            />
+            {later.map((session) => (
+              <div data-reveal>
+                <SessionCard session={session} locale={locale} variant="compact" />
+              </div>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="bg-background border-border border-t py-[var(--space-section-md)]">
+    <div class="mx-auto flex max-w-6xl flex-col gap-12 px-6">
+      <SectionHeading badge={page.format.badge} icon="route" heading={page.format.heading} />
+      <FormatSteps locale={locale} />
+      <div class="flex justify-center" data-reveal>
+        <Button variant="brand-outline" href={localizedPath('/cybersaturdays', locale)}>
+          {page.format.link}
+          <Icon name="arrow-right" size="sm" />
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-background-secondary border-border border-t py-[var(--space-section-md)]">
+    <ClosingCta
+      locale={locale}
+      heading={page.cta.heading}
+      description={page.cta.description}
+      primary={{
+        label: page.cta.primary,
+        href: localizedPath('/present', locale),
+        external: false,
+      }}
+      secondary={{ label: page.cta.secondary, ...join }}
+    />
+  </section>
+</PageLayout>

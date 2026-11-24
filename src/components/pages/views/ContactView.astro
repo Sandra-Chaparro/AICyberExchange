@@ -2,11 +2,13 @@
 /**
  * ContactView — the Contact page body.
  *
- * Shared by the default-locale route (`/contact`) and the locale-prefixed route
- * (`/<locale>/contact`). Page copy is read from `pages.contact.*`; the embedded
- * `ContactForm` localizes itself from the URL path, so the form fields follow
- * the active locale automatically. Untranslated keys fall back to the default
- * locale.
+ * Shared by `/contact` and `/<locale>/contact`. Page copy from
+ * `pages.contact.*`; the embedded `ContactForm` localizes itself from the URL.
+ *
+ * The three topic cards — join, present, something else — fill in the form's
+ * subject. They are ordinary links (`?topic=present#message`), so they work
+ * without JavaScript and other pages can link straight to a topic; the script
+ * at the foot only saves the reload and fills the subject from the URL.
  */
 import PageLayout from '@/layouts/PageLayout.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
@@ -16,31 +18,41 @@ import { Hero } from '@/components/hero';
 import ContactForm from '@/components/patterns/ContactForm.astro';
 import siteConfig from '@/config/site.config';
 import { resolveSocialLinks } from '@/lib/utils';
-import { t, tData, defaultLocale } from '@/i18n';
+import type Dictionary from '@/i18n/en.json';
+import { t, tData, defaultLocale, localizedPath } from '@/i18n';
 
 interface Props {
   /** Locale whose copy this page renders. Defaults to the site default. */
   locale?: string;
 }
 
-const { locale = defaultLocale } = Astro.props;
+interface Reason {
+  id: string;
+  icon: string;
+  title: string;
+  description: string;
+  subject: string;
+}
 
-const hero = tData<{ badge: string; titleLead: string; titleHighlight: string; description: string }>(
-  'pages.contact.hero',
-  locale
-)!;
+const { locale = defaultLocale } = Astro.props;
+const page = tData<(typeof Dictionary)['pages']['contact']>('pages.contact', locale)!;
+const reasons = page.reasons.items as Reason[];
+const contactPath = localizedPath('/contact', locale);
 
 const socialLinks = resolveSocialLinks(siteConfig.socialLinks);
-
 const channels = [
-  {
-    icon: 'mail',
-    label: t('pages.contact.emailLabel', locale),
-    value: siteConfig.email,
-    note: t('pages.contact.emailNote', locale),
-    href: `mailto:${siteConfig.email}`,
-    external: false,
-  },
+  ...(siteConfig.email
+    ? [
+        {
+          icon: 'mail',
+          label: t('pages.contact.emailLabel', locale),
+          value: siteConfig.email,
+          note: t('pages.contact.emailNote', locale),
+          href: `mailto:${siteConfig.email}`,
+          external: false,
+        },
+      ]
+    : []),
   ...socialLinks.map((link) => ({
     icon: link.icon,
     label: link.label,
@@ -52,86 +64,144 @@ const channels = [
 ];
 ---
 
-<PageLayout
-  title={t('pages.contact.meta.title', locale)}
-  description={t('pages.contact.meta.description', locale)}
-  eagerReveal
->
+<PageLayout title={page.meta.title} description={page.meta.description} eagerReveal>
   <Hero layout="centered" size="sm" class="isolate" showHeroHalo>
     <Badge slot="badge" variant="brand" pill>
       <Icon name="mail" size="sm" />
-      {hero.badge}
+      {page.hero.badge}
     </Badge>
-
-    <h1 slot="title">
-      {hero.titleLead} <span class="text-brand-500">{hero.titleHighlight}</span>
-    </h1>
-
-    <p slot="description" class="!text-balance">
-      {hero.description}
-    </p>
+    <h1 slot="title" class="!text-4xl sm:!text-5xl lg:!text-6xl">{page.hero.title}</h1>
+    <p slot="description" class="!text-balance">{page.hero.description}</p>
   </Hero>
 
-  <!-- Contact Section -->
-  <section class="relative isolate overflow-hidden py-[var(--space-section-md)] bg-background-secondary border-t border-border">
-    <div class="relative z-10 mx-auto max-w-5xl px-6">
-      <div class="grid grid-cols-1 glitch:grid-cols-5 gap-10 glitch:gap-16 items-stretch">
-
-        <!-- Left column: contact form -->
-        <div class="glitch:col-span-3 h-full sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0" data-reveal data-reveal-ease="smooth">
-          <Card padding="lg" class="h-full flex flex-col justify-center">
-            <h2 class="font-display text-xl font-bold text-foreground mb-6 sm:text-center glitch:text-left">{t('pages.contact.formTitle', locale)}</h2>
-            <ContactForm />
-          </Card>
+  <section
+    class="bg-background-secondary border-border relative isolate border-t py-[var(--space-section-md)]"
+  >
+    <div class="relative z-10 mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-5 lg:gap-14">
+      <!-- Topics and channels -->
+      <div class="flex flex-col gap-8 lg:col-span-2" data-reveal data-reveal-ease="smooth">
+        <div class="flex flex-col gap-4">
+          <h2 class="font-display text-foreground text-xl font-bold">{page.reasons.heading}</h2>
+          <ul class="flex flex-col gap-3" data-contact-topics>
+            {
+              reasons.map((reason) => (
+                <li>
+                  <a
+                    href={`${contactPath}?topic=${reason.id}#message`}
+                    data-topic={reason.id}
+                    data-subject={reason.subject}
+                    class="contact-topic group border-border bg-card hover:border-brand-500/50 flex items-start gap-4 rounded-2xl border p-5 transition-colors"
+                  >
+                    <span class="bg-brand-500/10 text-brand-600 dark:text-brand-400 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+                      <Icon name={reason.icon} size="md" />
+                    </span>
+                    <span class="flex flex-col gap-1">
+                      <span class="text-foreground font-semibold">{reason.title}</span>
+                      <span class="text-foreground-muted text-sm leading-relaxed">
+                        {reason.description}
+                      </span>
+                    </span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
         </div>
 
-        <!-- Right column: contact channels -->
-        <div class="glitch:col-span-2 space-y-4 sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0" data-reveal data-reveal-delay="1" data-reveal-ease="smooth">
-          <div class="sm:text-center glitch:text-left">
-            <h2 class="font-display text-lg font-bold text-foreground mb-1">{t('pages.contact.channelsTitle', locale)}</h2>
-            <p class="text-sm text-foreground-muted">{t('pages.contact.channelsSubtitle', locale)}</p>
-          </div>
-
-          <!-- Channel list -->
-          <div class="space-y-2">
-            {channels.map((ch) => (
-              <a
-                href={ch.href}
-                {...ch.external ? { target: '_blank', rel: 'noopener noreferrer' } : {}}
-                class="block group"
-              >
-                <Card hover padding="sm" class="h-full">
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 shrink-0 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
-                      <Icon name={ch.icon} size="sm" />
+        {
+          channels.length > 0 && (
+            <div class="flex flex-col gap-3">
+              <h2 class="font-display text-foreground text-lg font-bold">{page.channelsTitle}</h2>
+              {channels.map((ch) => (
+                <a
+                  href={ch.href}
+                  {...(ch.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  class="group block"
+                >
+                  <Card hover padding="sm">
+                    <div class="flex items-center gap-3">
+                      <div class="bg-brand-500/10 text-brand-500 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+                        <Icon name={ch.icon} size="sm" />
+                      </div>
+                      <div class="min-w-0 flex-1">
+                        <p class="text-foreground text-sm font-semibold">{ch.label}</p>
+                        <p class="text-foreground-muted truncate text-xs">{ch.value}</p>
+                      </div>
+                      <Icon
+                        name="arrow-up-right"
+                        size="sm"
+                        class="text-foreground-muted group-hover:text-brand-500 shrink-0 transition-colors"
+                      />
                     </div>
-                    <div class="min-w-0 flex-1">
-                      <p class="font-semibold text-sm text-foreground">{ch.label}</p>
-                      <p class="text-xs text-foreground-muted truncate">{ch.value}</p>
-                    </div>
-                    <Icon name="arrow-up-right" size="sm" class="text-foreground-muted group-hover:text-brand-500 transition-colors shrink-0" />
-                  </div>
-                </Card>
-              </a>
-            ))}
-          </div>
-
-          <!-- Location card -->
-          <Card hover padding="sm" class="bg-brand-500/5 border-brand-500/20">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 shrink-0 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
-                <Icon name="map-pin" size="sm" />
-              </div>
-              <div>
-                <p class="font-semibold text-sm text-foreground">{siteConfig.address?.city ?? 'Your City'}</p>
-                <p class="text-xs text-foreground-muted mt-0.5">{t('pages.contact.basedIn', locale, { country: siteConfig.address?.country ?? 'Your Country' })}</p>
-              </div>
+                  </Card>
+                </a>
+              ))}
             </div>
-          </Card>
+          )
+        }
+      </div>
 
-        </div>
-
+      <!-- Form -->
+      <div
+        id="message"
+        class="scroll-mt-24 lg:col-span-3"
+        data-reveal
+        data-reveal-delay="1"
+        data-reveal-ease="smooth"
+      >
+        <Card padding="lg" class="h-full">
+          <h2 class="font-display text-foreground mb-2 text-xl font-bold">{page.formTitle}</h2>
+          <p class="text-foreground-muted mb-6 text-sm">{page.formHint}</p>
+          <ContactForm />
+        </Card>
       </div>
     </div>
   </section>
 </PageLayout>
+
+<style>
+  .contact-topic[aria-current='true'] {
+    border-color: var(--color-brand-500);
+    background: color-mix(in srgb, var(--color-brand-500) 6%, var(--color-card));
+  }
+</style>
+
+<script>
+  function initContactTopics() {
+    const list = document.querySelector<HTMLElement>('[data-contact-topics]');
+    const subject = document.querySelector<HTMLInputElement>('#message input[name="subject"]');
+    if (!list || !subject || list.dataset.init) return;
+    list.dataset.init = 'true';
+    const links = [...list.querySelectorAll<HTMLAnchorElement>('a[data-topic]')];
+
+    const select = (topic: string | null, fill: boolean) => {
+      const link = links.find((a) => a.dataset.topic === topic);
+      links.forEach((a) => a.setAttribute('aria-current', String(a === link)));
+      // Fill the subject only while it is empty or still holds a topic's
+      // preset, so switching topic never overwrites what someone typed.
+      const presets = links.map((a) => a.dataset.subject ?? '');
+      if (link && fill && (subject.value === '' || presets.includes(subject.value))) {
+        subject.value = link.dataset.subject ?? '';
+      }
+    };
+
+    select(new URLSearchParams(location.search).get('topic'), true);
+
+    links.forEach((a) =>
+      a.addEventListener('click', (event) => {
+        event.preventDefault();
+        const topic = a.dataset.topic ?? null;
+        select(topic, true);
+        history.replaceState(null, '', a.href);
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        document
+          .getElementById('message')
+          ?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+        const focusTarget = document.querySelector<HTMLElement>('#message input[name="name"]');
+        focusTarget?.focus({ preventScroll: true });
+      })
+    );
+  }
+  initContactTopics();
+  document.addEventListener('astro:page-load', initContactTopics);
+</script>

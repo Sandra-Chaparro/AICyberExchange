@@ -1,0 +1,56 @@
+---
+/**
+ * ClosingCta — the band that ends each AICX page: a heading, a sentence and
+ * two actions, on the theme's CtaBand.
+ */
+import CtaBand from '@/components/patterns/CtaBand.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { t, defaultLocale } from '@/i18n';
+import type { CtaLink } from '@/lib/community';
+
+interface Props {
+  heading: string;
+  description: string;
+  primary: { label: string } & CtaLink;
+  secondary?: { label: string } & CtaLink;
+  locale?: string;
+}
+
+const { heading, description, primary, secondary, locale = defaultLocale } = Astro.props;
+const external = (link: CtaLink, label: string) =>
+  link.external
+    ? {
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        'aria-label': t('aicx.session.opensInNewTab', locale, { label }),
+      }
+    : {};
+---
+
+<CtaBand>
+  <h2 class="font-display text-foreground mb-4 text-3xl font-bold text-balance sm:text-4xl">
+    {heading}
+  </h2>
+  <p class="text-foreground-muted mb-8 text-lg text-balance">{description}</p>
+  <div class="flex flex-col justify-center gap-4 sm:flex-row">
+    <Button size="lg" href={primary.href} {...external(primary, primary.label)}>
+      {primary.label}
+      <Icon name="arrow-right" size="sm" />
+    </Button>
+    {
+      secondary && (
+        <Button
+          size="lg"
+          variant="outline"
+          class="cta-btn-brand"
+          href={secondary.href}
+          {...external(secondary, secondary.label)}
+        >
+          {secondary.label}
+          <Icon name="arrow-right" size="sm" />
+        </Button>
+      )
+    }
+  </div>
+</CtaBand>

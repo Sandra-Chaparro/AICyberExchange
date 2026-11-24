@@ -1,0 +1,191 @@
+---
+/**
+ * ExchangeDiagram — the home hero's illustration of what AICX does: the
+ * people building technology on one side, the community learning and applying
+ * it on the other, and CyberSaturday between them.
+ *
+ * Drawn as SVG from the colour tokens, so it follows the colour theme and the
+ * light/dark mode. Signals travel along the connections in both directions —
+ * demonstrations one way, questions the other — and stop for visitors who ask
+ * for reduced motion. Labels come from `aicx.visual`.
+ */
+import { tData, defaultLocale } from '@/i18n';
+
+interface Props {
+  locale?: string;
+  class?: string;
+}
+
+const { locale = defaultLocale, class: className } = Astro.props;
+const v = tData<{
+  label: string;
+  builders: string;
+  community: string;
+  hub: string;
+  builderNodes: string[];
+  communityNodes: string[];
+}>('aicx.visual', locale)!;
+
+const W = 560;
+const H = 400;
+const hub = { x: W / 2, y: 212, r: 62 };
+const rows = [112, 212, 312];
+const pill = { w: 120, h: 38 };
+const leftX = 82;
+const rightX = W - 82;
+
+// A gentle S-curve from a pill's inner edge to the hub's rim.
+const toHub = (x: number, y: number, side: 'l' | 'r') => {
+  const sx = side === 'l' ? x + pill.w / 2 : x - pill.w / 2;
+  const ex = side === 'l' ? hub.x - hub.r : hub.x + hub.r;
+  const mx = (sx + ex) / 2;
+  return `M ${sx} ${y} C ${mx} ${y}, ${mx} ${hub.y}, ${ex} ${hub.y}`;
+};
+const left = v.builderNodes
+  .slice(0, 3)
+  .map((label, i) => ({ label, y: rows[i], d: toHub(leftX, rows[i], 'l') }));
+const right = v.communityNodes
+  .slice(0, 3)
+  .map((label, i) => ({ label, y: rows[i], d: toHub(rightX, rows[i], 'r') }));
+---
+
+<figure class:list={['exchange-diagram', className]}>
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    role="img"
+    aria-label={v.label}
+    class="h-auto w-full overflow-visible"
+  >
+    <!-- Column labels -->
+    <text x={leftX} y="44" text-anchor="middle" class="xd-col">{v.builders}</text>
+    <text x={rightX} y="44" text-anchor="middle" class="xd-col">{v.community}</text>
+
+    <!-- Connections: a quiet base line, and a moving signal over it. -->
+    {[...left, ...right].map((n) => <path d={n.d} class="xd-line" />)}
+    {left.map((n, i) => <path d={n.d} class="xd-signal" style={`animation-delay: ${i * -0.9}s`} />)}
+    {
+      right.map((n, i) => (
+        <path
+          d={n.d}
+          class="xd-signal xd-signal-back"
+          style={`animation-delay: ${i * -1.1 - 0.4}s`}
+        />
+      ))
+    }
+
+    <!-- Hub -->
+    <circle cx={hub.x} cy={hub.y} r={hub.r + 26} class="xd-ring xd-ring-outer"></circle>
+    <circle cx={hub.x} cy={hub.y} r={hub.r + 12} class="xd-ring"></circle>
+    <circle cx={hub.x} cy={hub.y} r={hub.r} class="xd-hub"></circle>
+    <text x={hub.x} y={hub.y + 5} text-anchor="middle" class="xd-hub-title">{v.hub}</text>
+
+    <!-- Nodes -->
+    {
+      [...left.map((n) => ({ ...n, x: leftX })), ...right.map((n) => ({ ...n, x: rightX }))].map(
+        (n) => (
+          <g>
+            <rect
+              x={n.x - pill.w / 2}
+              y={n.y - pill.h / 2}
+              width={pill.w}
+              height={pill.h}
+              rx={pill.h / 2}
+              class="xd-pill"
+            />
+            <text x={n.x} y={n.y + 4.5} text-anchor="middle" class="xd-pill-text">
+              {n.label}
+            </text>
+          </g>
+        )
+      )
+    }
+  </svg>
+</figure>
+
+<style>
+  .exchange-diagram {
+    margin: 0;
+  }
+  .xd-col {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    fill: var(--color-brand-600, var(--color-brand-500));
+  }
+  :global(html.dark) .xd-col {
+    fill: var(--color-brand-400, var(--color-brand-500));
+  }
+  .xd-line {
+    fill: none;
+    stroke: var(--color-border-strong);
+    stroke-width: 1.25;
+  }
+  .xd-signal {
+    fill: none;
+    stroke: var(--color-brand-500);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 10 190;
+    animation: xd-flow 3.6s linear infinite;
+  }
+  .xd-signal-back {
+    animation-direction: reverse;
+  }
+  @keyframes xd-flow {
+    from {
+      stroke-dashoffset: 200;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  .xd-ring {
+    fill: none;
+    stroke: color-mix(in oklch, var(--color-brand-500) 30%, transparent);
+    stroke-width: 1;
+  }
+  .xd-ring-outer {
+    stroke-dasharray: 2 6;
+    transform-origin: 280px 212px;
+    animation: xd-spin 60s linear infinite;
+  }
+  @keyframes xd-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .xd-hub {
+    fill: color-mix(in srgb, var(--color-brand-500) 12%, var(--color-card));
+    stroke: var(--color-brand-500);
+    stroke-width: 1.5;
+  }
+  .xd-hub-title {
+    font-family: var(--font-display, inherit);
+    font-size: 14px;
+    font-weight: 700;
+    fill: var(--color-foreground);
+  }
+  .xd-pill {
+    fill: var(--color-card);
+    stroke: var(--color-border-strong);
+    stroke-width: 1;
+  }
+  .xd-pill-text {
+    font-size: 13px;
+    font-weight: 500;
+    fill: var(--color-foreground);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .xd-signal,
+    .xd-ring-outer {
+      animation: none;
+    }
+    .xd-signal {
+      stroke-dasharray: none;
+      stroke-opacity: 0.35;
+    }
+  }
+</style>

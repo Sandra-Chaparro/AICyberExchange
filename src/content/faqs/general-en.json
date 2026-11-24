@@ -1,6 +1,6 @@
 {
-  "question": "What is Astro Rocket?",
-  "answer": "Astro Rocket is a free, open-source website theme built on Astro 7 and Tailwind CSS v4. It includes a full component library, a blog with MDX support, built-in dark mode, SEO, and everything else you need to ship a fast, modern website without starting from scratch.",
+  "question": "What is AI & Cyber Exchange?",
+  "answer": "AI & Cyber Exchange is a community-driven professional forum that connects AI and cybersecurity companies, startups, practitioners, technology leaders, students, and people transitioning into cybersecurity. It hosts CyberSaturday sessions, where one company, startup, or technology team demonstrates its technology and discusses it with the community.",
   "category": "general",
   "order": 1,
   "locale": "en"

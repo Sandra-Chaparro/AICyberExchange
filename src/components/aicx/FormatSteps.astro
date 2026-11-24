@@ -1,0 +1,74 @@
+---
+/**
+ * FormatSteps — the five parts of a CyberSaturday: Discover, See, Understand,
+ * Discuss, Connect.
+ *
+ * Read from `aicx.format.steps`, so the home page, the CyberSaturdays page,
+ * the Present page and the Upcoming page all describe the same session.
+ *
+ * Laid out as a numbered sequence joined by a line, because the order is the
+ * point: the problem comes before the demonstration, and the discussion comes
+ * after both.
+ */
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { tData, defaultLocale } from '@/i18n';
+
+interface Props {
+  locale?: string;
+}
+
+interface Step {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+const { locale = defaultLocale } = Astro.props;
+const steps = tData<{ steps: Step[] }>('aicx.format', locale)!.steps;
+---
+
+<ol class="format-steps grid gap-4 sm:grid-cols-2 lg:grid-cols-5 lg:gap-0">
+  {
+    steps.map((step, i) => (
+      <li
+        class="format-step relative flex gap-4 lg:flex-col lg:items-center lg:px-3 lg:text-center"
+        data-reveal
+        data-reveal-delay={i || undefined}
+      >
+        <div class="relative z-10 flex flex-col items-center">
+          <span class="step-dot border-brand-500/30 bg-background text-brand-500 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border shadow-sm">
+            <Icon name={step.icon} size="lg" />
+          </span>
+        </div>
+        <div class="flex flex-col gap-1.5 pt-1 lg:pt-4">
+          <p class="text-brand-600 dark:text-brand-400 font-mono text-xs font-semibold tracking-[0.18em] uppercase">
+            {String(i + 1).padStart(2, '0')}
+          </p>
+          <h3 class="font-display text-foreground text-xl font-semibold">{step.title}</h3>
+          <p class="text-foreground-muted text-sm leading-relaxed">{step.description}</p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  /* The line that joins the steps, drawn through the centre of each icon on
+     wide screens. It runs from the middle of one icon to the middle of the
+     next, so it starts and stops on the first and last step. */
+  @media (min-width: 1024px) {
+    .format-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 1.75rem;
+      left: calc(50% + 2rem);
+      right: calc(-50% + 2rem);
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        color-mix(in oklch, var(--color-brand-500) 55%, transparent),
+        color-mix(in oklch, var(--color-brand-500) 15%, transparent)
+      );
+    }
+  }
+</style>

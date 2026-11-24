@@ -1,0 +1,121 @@
+---
+/**
+ * CommunityView — who the community is, what it believes, and how to take
+ * part.
+ *
+ * Shared by `/community` and `/<locale>/community`. Copy from
+ * `pages.community.*` and the shared `aicx.*` keys. The `#join` section is the
+ * target of the footer's "Join the community" link.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Hero } from '@/components/hero';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import SectionHeading from '@/components/aicx/SectionHeading.astro';
+import AudienceGrid from '@/components/aicx/AudienceGrid.astro';
+import ReasonGrid from '@/components/aicx/ReasonGrid.astro';
+import Philosophy from '@/components/aicx/Philosophy.astro';
+import ClosingCta from '@/components/aicx/ClosingCta.astro';
+import type Dictionary from '@/i18n/en.json';
+import { t, tData, defaultLocale, localizedPath } from '@/i18n';
+import { getJoinLink, getPresentLink } from '@/lib/community';
+
+interface Props {
+  locale?: string;
+}
+
+const { locale = defaultLocale } = Astro.props;
+const page = tData<(typeof Dictionary)['pages']['community']>('pages.community', locale)!;
+const join = getJoinLink(locale);
+const joinAttrs = join.external
+  ? {
+      target: '_blank',
+      rel: 'noopener noreferrer',
+      'aria-label': t('aicx.session.opensInNewTab', locale, { label: page.hero.primary }),
+    }
+  : {};
+---
+
+<PageLayout
+  title={page.meta.title}
+  description={page.meta.description}
+  footerBackground="secondary"
+>
+  <Hero layout="centered" size="sm" class="isolate pb-[var(--space-section-sm)]" showHeroHalo>
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="users" size="sm" />
+      {page.hero.badge}
+    </Badge>
+    <h1 slot="title" class="!text-4xl sm:!text-5xl lg:!text-6xl">{page.hero.title}</h1>
+    <p slot="description">{page.hero.description}</p>
+    <Fragment slot="actions">
+      <Button size="lg" href={join.href} {...joinAttrs}>
+        {page.hero.primary}
+        <Icon name="arrow-right" size="sm" />
+      </Button>
+      <Button
+        size="lg"
+        variant="outline"
+        href={localizedPath('/upcoming', locale)}
+        class="hero-btn-opaque"
+      >
+        {page.hero.secondary}
+      </Button>
+    </Fragment>
+  </Hero>
+
+  <!-- Audience -->
+  <section class="bg-background-secondary border-border border-t py-[var(--space-section-md)]">
+    <div class="mx-auto flex max-w-6xl flex-col gap-10 px-6">
+      <SectionHeading
+        badge={page.audience.badge}
+        icon="users"
+        heading={page.audience.heading}
+        lead={page.audience.lead}
+      />
+      <AudienceGrid locale={locale} />
+    </div>
+  </section>
+
+  <!-- Philosophy -->
+  <section class="bg-background border-border border-t py-[var(--space-section-md)]">
+    <div class="mx-auto max-w-6xl px-6">
+      <Philosophy locale={locale} badge={page.philosophy.badge} />
+    </div>
+  </section>
+
+  <!-- Why attend -->
+  <section class="bg-background-secondary border-border border-t py-[var(--space-section-md)]">
+    <div class="mx-auto flex max-w-6xl flex-col gap-10 px-6">
+      <SectionHeading badge={page.attend.badge} icon="user-round" heading={page.attend.heading} />
+      <ReasonGrid locale={locale} source="aicx.whyAttend" columns={3} />
+    </div>
+  </section>
+
+  <!-- Ways to take part -->
+  <section class="bg-background border-border border-t py-[var(--space-section-md)]">
+    <div class="mx-auto flex max-w-6xl flex-col gap-10 px-6">
+      <SectionHeading
+        badge={page.participate.badge}
+        icon="hand-heart"
+        heading={page.participate.heading}
+      />
+      <ReasonGrid items={page.participate.items} columns={4} />
+    </div>
+  </section>
+
+  <!-- Join -->
+  <section
+    id="join"
+    class="bg-background-secondary border-border scroll-mt-20 border-t py-[var(--space-section-md)]"
+  >
+    <ClosingCta
+      locale={locale}
+      heading={page.join.heading}
+      description={page.join.description}
+      primary={{ label: page.join.primary, ...join }}
+      secondary={{ label: page.join.secondary, ...getPresentLink(locale) }}
+    />
+  </section>
+</PageLayout>

@@ -33,3 +33,26 @@ export async function renderFaviconIco(
   );
   return pngToIco(pngs);
 }
+
+/** Resize a square source image to a PNG favicon of the given pixel size. */
+export async function renderImageFaviconPng(source: string, size: number): Promise<Buffer> {
+  return sharp(source).resize(size, size, { fit: 'cover' }).png().toBuffer();
+}
+
+/** Build a multi-size favicon.ico (16/32/48) from a source image. */
+export async function renderImageFaviconIco(source: string): Promise<Buffer> {
+  const pngs = await Promise.all([16, 32, 48].map((s) => renderImageFaviconPng(source, s)));
+  return pngToIco(pngs);
+}
+
+/**
+ * favicon.svg for an image favicon: a 64px PNG embedded in an SVG wrapper,
+ * so the `image/svg+xml` link and the manifest entry keep working unchanged.
+ */
+export async function renderImageFaviconSvg(source: string): Promise<string> {
+  const png = await renderImageFaviconPng(source, 64);
+  return (
+    '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64" width="64" height="64">' +
+    `<image width="64" height="64" href="data:image/png;base64,${png.toString('base64')}"/></svg>`
+  );
+}

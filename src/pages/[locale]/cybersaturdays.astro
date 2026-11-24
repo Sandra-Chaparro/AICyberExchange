@@ -1,0 +1,14 @@
+---
+import CyberSaturdaysView from '@/components/pages/views/CyberSaturdaysView.astro';
+import { getSecondaryLocales } from '@/i18n';
+
+// Locale-prefixed route (`/<locale>/cybersaturdays`). One page per non-default locale;
+// emits nothing when i18n is off.
+export function getStaticPaths() {
+  return getSecondaryLocales().map((locale) => ({ params: { locale } }));
+}
+
+const { locale } = Astro.params;
+---
+
+<CyberSaturdaysView locale={locale} />

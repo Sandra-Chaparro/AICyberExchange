@@ -16,7 +16,7 @@ import {
   siteUrlDisagreement,
   disagreementMessage,
 } from './scripts/site-url-agreement.mjs';
-import { SITE_NAME, THEME_COLOR } from './src/config/branding.ts';
+import { SITE_NAME, THEME_COLOR, FAVICON_SOURCE } from './src/config/branding.ts';
 
 /**
  * Load `.env` into `process.env` before anything below reads it.
@@ -188,15 +188,31 @@ function faviconAssets() {
         // of the sharp-backed module makes pagefind's own dynamic import above
         // fail with "Vite module runner has been closed" (#600).
         const { buildFaviconSvg } = await import('./src/lib/favicon/svg.ts');
-        const { renderFaviconPng, renderFaviconIco } = await import('./src/lib/favicon/raster.ts');
+        const {
+          renderFaviconPng,
+          renderFaviconIco,
+          renderImageFaviconPng,
+          renderImageFaviconIco,
+          renderImageFaviconSvg,
+        } = await import('./src/lib/favicon/raster.ts');
         const out = fileURLToPath(dir);
 
-        await writeFile(join(out, 'favicon.svg'), buildFaviconSvg(letter, THEME_COLOR));
-
-        for (const [name, size] of Object.entries(pngSizes)) {
-          await writeFile(join(out, name), await renderFaviconPng(letter, THEME_COLOR, size));
+        // FAVICON_SOURCE set: every icon is resized from that image.
+        // Empty: the site's initial on the theme colour, as before.
+        if (FAVICON_SOURCE) {
+          const source = fileURLToPath(new URL(FAVICON_SOURCE, import.meta.url));
+          await writeFile(join(out, 'favicon.svg'), await renderImageFaviconSvg(source));
+          for (const [name, size] of Object.entries(pngSizes)) {
+            await writeFile(join(out, name), await renderImageFaviconPng(source, size));
+          }
+          await writeFile(join(out, 'favicon.ico'), await renderImageFaviconIco(source));
+        } else {
+          await writeFile(join(out, 'favicon.svg'), buildFaviconSvg(letter, THEME_COLOR));
+          for (const [name, size] of Object.entries(pngSizes)) {
+            await writeFile(join(out, name), await renderFaviconPng(letter, THEME_COLOR, size));
+          }
+          await writeFile(join(out, 'favicon.ico'), await renderFaviconIco(letter, THEME_COLOR));
         }
-        await writeFile(join(out, 'favicon.ico'), await renderFaviconIco(letter, THEME_COLOR));
 
         logger.info(`wrote ${Object.keys(pngSizes).length + 2} favicon files to ${out}`);
       },

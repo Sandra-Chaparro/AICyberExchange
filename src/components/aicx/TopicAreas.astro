@@ -1,0 +1,65 @@
+---
+/**
+ * TopicAreas — "What We Explore": the four areas sessions draw from, from
+ * `aicx.topics`.
+ *
+ * The note above the areas matters as much as the areas: each session covers
+ * its presenter's work, so the list describes the range over time and does
+ * not promise any one session covers it all.
+ */
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { tData, defaultLocale } from '@/i18n';
+
+interface Props {
+  locale?: string;
+  /** Show the note about session coverage. */
+  showNote?: boolean;
+}
+
+interface Area {
+  icon: string;
+  title: string;
+  items: string[];
+}
+
+const { locale = defaultLocale, showNote = true } = Astro.props;
+const topics = tData<{ note: string; areas: Area[] }>('aicx.topics', locale)!;
+---
+
+<div class="flex flex-col gap-8">
+  {
+    showNote && (
+      <p
+        class="text-foreground-muted mx-auto max-w-2xl text-center text-base leading-relaxed text-balance"
+        data-reveal
+      >
+        {topics.note}
+      </p>
+    )
+  }
+  <div class="grid gap-4 md:grid-cols-2">
+    {
+      topics.areas.map((area, i) => (
+        <section
+          class="topic-area border-border bg-card relative flex flex-col gap-5 overflow-hidden rounded-2xl border p-6 sm:p-8"
+          data-reveal
+          data-reveal-delay={i % 2 || undefined}
+        >
+          <div class="flex items-center gap-3">
+            <span class="bg-brand-500/10 text-brand-600 dark:text-brand-400 flex h-10 w-10 items-center justify-center rounded-lg">
+              <Icon name={area.icon} size="md" />
+            </span>
+            <h3 class="font-display text-foreground text-xl font-semibold">{area.title}</h3>
+          </div>
+          <ul class="flex flex-wrap gap-2">
+            {area.items.map((item) => (
+              <li class="border-border bg-background-secondary text-foreground-secondary rounded-full border px-3 py-1 text-sm">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+</div>

@@ -1,0 +1,9 @@
+---
+import CyberSaturdaysView from '@/components/pages/views/CyberSaturdaysView.astro';
+import { defaultLocale } from '@/i18n';
+
+// The default-locale route. Additional locales are served by
+// `src/pages/[locale]/cybersaturdays.astro`, which renders the same view.
+---
+
+<CyberSaturdaysView locale={defaultLocale} />

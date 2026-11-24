@@ -1,0 +1,85 @@
+---
+/**
+ * CompanyGrid — the companies that have presented, as typeset name tiles.
+ *
+ * Names rather than logos: a logo is a company's mark, and using one needs
+ * its permission. Each tile links to the company's site when its session
+ * entry has a `companyUrl`, and is plain text otherwise.
+ */
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { t, defaultLocale } from '@/i18n';
+import type { Session } from '@/lib/sessions';
+
+interface Props {
+  companies: Session[];
+  locale?: string;
+}
+
+const { companies, locale = defaultLocale } = Astro.props;
+---
+
+<ul class="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 lg:grid-cols-4">
+  {
+    companies.map((s, i) => {
+      const url = s.data.companyUrl;
+      const inner = (
+        <>
+          <span
+            class="company-dots pointer-events-none absolute inset-0 rounded-2xl"
+            aria-hidden="true"
+          />
+          <span
+            class="company-mark text-brand-600 dark:text-brand-400 relative font-mono text-xs"
+            aria-hidden="true"
+          >
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <span class="font-display text-foreground relative text-xl font-semibold tracking-tight sm:text-2xl">
+            {s.data.company}
+          </span>
+          {url && (
+            <Icon
+              name="arrow-up-right"
+              size="sm"
+              class="text-foreground-subtle group-hover:text-brand-500 absolute top-5 right-5 transition-colors"
+            />
+          )}
+        </>
+      );
+      return (
+        <li data-reveal data-reveal-delay={i % 4 || undefined}>
+          {url ? (
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t('aicx.session.opensInNewTab', locale, { label: s.data.company })}
+              class="company-tile group border-border bg-card hover:border-brand-500/50 relative flex h-full min-h-32 flex-col justify-between gap-6 rounded-2xl border p-5 transition-colors"
+            >
+              {inner}
+            </a>
+          ) : (
+            <div class="company-tile border-border bg-card relative flex h-full min-h-32 flex-col justify-between gap-6 rounded-2xl border p-5">
+              {inner}
+            </div>
+          )}
+        </li>
+      );
+    })
+  }
+</ul>
+
+<style>
+  /* A faint dot grid fading in from the tile's lower right, so a row of plain
+     names reads as a set of tiles rather than a list. Drawn on a decorative
+     layer under the content, masked so it never sits behind the name. */
+  .company-dots {
+    background-image: radial-gradient(
+      color-mix(in oklch, var(--color-brand-500) 35%, transparent) 1px,
+      transparent 1.5px
+    );
+    background-size: 12px 12px;
+    -webkit-mask-image: linear-gradient(135deg, transparent 45%, #000 100%);
+    mask-image: linear-gradient(135deg, transparent 45%, #000 100%);
+  }
+</style>

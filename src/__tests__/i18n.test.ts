@@ -47,7 +47,7 @@ describe('i18n tData() helper', () => {
     // about page was later restructured, `intro` stopped existing, and the
     // test failed for a reason that had nothing to do with tData().
     const items = tData<{ icon: string; title: string; description: string }[]>(
-      'pages.about.principles.items',
+      'aicx.format.steps',
       'en'
     );
     expect(Array.isArray(items)).toBe(true);
@@ -62,15 +62,15 @@ describe('i18n tData() helper', () => {
   });
 
   it('returns the Dutch structured value when locale is nl', () => {
-    const hero = tData<{ badge: string }>('pages.about.hero', 'nl');
-    expect(hero?.badge).toBe('Over');
+    const items = tData<{ about: string }>('nav.items', 'nl');
+    expect(items?.about).toBe('Over');
   });
 
   it('falls back to the default-locale value when the locale has no entry', () => {
     // 'de' has no dictionary loaded yet — should fall back to the English data
-    const cards = tData<unknown[]>('pages.about.faq.cards', 'de');
-    expect(Array.isArray(cards)).toBe(true);
-    expect(cards?.length).toBe(2);
+    const groups = tData<unknown[]>('aicx.audience.groups', 'de');
+    expect(Array.isArray(groups)).toBe(true);
+    expect(groups?.length).toBe(4);
   });
 
   it('returns undefined when the key is absent in every dictionary', () => {

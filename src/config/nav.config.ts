@@ -84,22 +84,31 @@ export interface ResolvedNavItem {
 }
 
 export const navItems: NavItem[] = [
-  { label: 'Home', href: '/', order: 0, labelKey: 'nav.items.home' },
-  { label: 'Services', href: '/services', order: 1, labelKey: 'nav.items.services' },
-  { label: 'Projects', href: '/projects', order: 2, labelKey: 'nav.items.projects' },
-  { label: 'Blog', href: '/blog', order: 3, labelKey: 'nav.items.blog' },
-  { label: 'About', href: '/about', order: 4, labelKey: 'nav.items.about' },
+  { label: 'About', href: '/about', order: 0, labelKey: 'nav.items.about' },
+  { label: 'CyberSaturdays', href: '/cybersaturdays', order: 1, labelKey: 'nav.items.cybersaturdays' },
+  { label: 'Upcoming', href: '/upcoming', order: 2, labelKey: 'nav.items.upcoming' },
+  { label: 'Sessions', href: '/sessions', order: 3, labelKey: 'nav.items.sessions' },
+  { label: 'Community', href: '/community', order: 4, labelKey: 'nav.items.community' },
   { label: 'Contact', href: '/contact', order: 5, labelKey: 'nav.items.contact' },
 ];
 
+/**
+ * The header's call to action, shown beside the nav. "Present With Us" is the
+ * page companies are looking for, so it gets the button rather than a link.
+ */
+export const headerCta: NavItem = {
+  label: 'Present With Us',
+  href: '/present',
+  order: 0,
+  labelKey: 'nav.cta.present',
+};
+
 export const footerNavItems: NavItem[] = [
   { label: 'Home', href: '/', order: 0, labelKey: 'nav.items.home' },
-  { label: 'Services', href: '/services', order: 1, labelKey: 'nav.items.services' },
-  { label: 'Projects', href: '/projects', order: 2, labelKey: 'nav.items.projects' },
-  { label: 'Blog', href: '/blog', order: 3, labelKey: 'nav.items.blog' },
-  { label: 'About', href: '/about', order: 4, labelKey: 'nav.items.about' },
-  { label: 'Contact', href: '/contact', order: 5, labelKey: 'nav.items.contact' },
-  { label: 'GitHub', href: 'https://github.com/hansmartensdev/Astro-Rocket', order: 6, external: true },
+  { label: 'About', href: '/about', order: 1, labelKey: 'nav.items.about' },
+  { label: 'CyberSaturdays', href: '/cybersaturdays', order: 2, labelKey: 'nav.items.cybersaturdays' },
+  { label: 'Sessions', href: '/sessions', order: 3, labelKey: 'nav.items.sessions' },
+  { label: 'Community', href: '/community', order: 4, labelKey: 'nav.items.community' },
 ];
 
 export const legalLinks: LegalLink[] = [];
@@ -112,25 +121,19 @@ export const legalLinks: LegalLink[] = [];
  * Projects column from the visible projects. Each is dropped when it has
  * nothing in it, so a new site shows one column and fills out as it grows.
  *
- * Anything here is *added* to those, which is what this is for: a column the
- * site has that cannot be derived — a support column, an offices column, a
- * second product. To replace the derived set entirely rather than add to it,
- * pass `linkGroups` to `<Footer>` directly.
- *
- * Every link is real on the demo. A footer that pads itself out with links to
- * somewhere else is worse than a short one, and worse still on a theme people
- * fork: they inherit whatever is here.
+ * Anything here is *added* to those: a column the site has that cannot be
+ * derived. To replace the derived set entirely rather than add to it, pass
+ * `linkGroups` to `<Footer>` directly.
  */
 export const footerLinkGroups: FooterLinkGroupConfig[] = [
   {
     titleKey: 'footer.groups.questions',
-    title: 'Got questions?',
+    title: 'Get involved',
     links: [
-      { label: 'FAQ', href: '/about#faq' },
-      { label: 'Email', href: 'mailto:hello@hansmartens.dev' },
-      { label: 'GitHub', href: 'https://github.com/hansmartensdev/Astro-Rocket', external: true },
-      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/hansmartensdev', external: true },
-      { label: 'Bluesky', href: 'https://bsky.app/profile/hansmartensdev.bsky.social', external: true },
+      { label: 'Join the community', href: '/community#join', labelKey: 'footer.links.join' },
+      { label: 'Present with us', href: '/present', labelKey: 'footer.links.present' },
+      { label: 'Next session', href: '/upcoming', labelKey: 'footer.links.upcoming' },
+      { label: 'Contact', href: '/contact', labelKey: 'footer.links.contact' },
     ],
   },
 ];

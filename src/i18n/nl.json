@@ -15,11 +15,16 @@
     "sectionConnect": "Volgen",
     "items": {
       "home": "Home",
-      "services": "Diensten",
-      "projects": "Projecten",
-      "blog": "Blog",
       "about": "Over",
+      "cybersaturdays": "CyberSaturdays",
+      "upcoming": "Volgende sessie",
+      "sessions": "Sessies",
+      "community": "Community",
+      "present": "Presenteer bij ons",
       "contact": "Contact"
+    },
+    "cta": {
+      "present": "Presenteer bij ons"
     }
   },
   "common": {
@@ -51,8 +56,8 @@
     "verticalTabs": "Verticale tabbladen"
   },
   "blog": {
-    "title": "Blog",
-    "description": "Recente artikelen en updates",
+    "title": "Insights",
+    "description": "Notes and resources from the AI & Cyber Exchange community.",
     "readingTime": "{minutes} min leestijd",
     "publishedOn": "Gepubliceerd op {date}",
     "updatedOn": "Bijgewerkt op {date}",
@@ -67,14 +72,14 @@
     "share": "Delen:",
     "shareOn": "Deel op {platform}",
     "copyLink": "Link kopiëren",
-    "metaTitle": "Blog",
-    "metaDescription": "De Astro Rocket-blog: praktische gidsen voor het instellen, configureren en bouwen met het thema.",
-    "heroBadge": "Alle berichten",
-    "heroDescription": "Alles wat je over Astro\u00a0Rocket moet weten, uitgelegd in praktische gidsen.",
+    "metaTitle": "Insights",
+    "metaDescription": "Notes and resources from the AI & Cyber Exchange community.",
+    "heroBadge": "Insights",
+    "heroDescription": "Notes and resources from the AI & Cyber Exchange community.",
     "allPosts": "Alle berichten",
     "noPosts": "Geen berichten gevonden",
     "pageMetaTitle": "Blog — Pagina {page}",
-    "pageMetaDescription": "Pagina {page} van {total} — praktische gidsen voor het instellen, configureren en bouwen met Astro Rocket.",
+    "pageMetaDescription": "Page {page} of {total} — notes and resources from the AI & Cyber Exchange community.",
     "pageBadge": "Pagina {page} van {total}",
     "newestPosts": "Nieuwste berichten",
     "tagMetaTitle": "#{tag} — Blog",
@@ -91,9 +96,9 @@
     "updated": "Bijgewerkt",
     "rssFeed": "RSS-feed",
     "cta": {
-      "heading": "Klaar om te bouwen?",
-      "description": "Kloon Astro Rocket, kies een thema en lanceer je volgende project in minuten.",
-      "button": "Aan de slag"
+      "heading": "Come to a CyberSaturday",
+      "description": "See emerging AI and cybersecurity technology demonstrated by the teams building it.",
+      "button": "See the next session"
     }
   },
   "comments": {
@@ -115,12 +120,12 @@
     "galleryNextImage": "Volgende afbeelding",
     "galleryPreviousImage": "Vorige afbeelding",
     "metaTitle": "Projecten",
-    "metaDescription": "Geselecteerd werk — websites, tools en open-source projecten gebouwd door Astro Rocket.",
+    "metaDescription": "Projects from the AI & Cyber Exchange community.",
     "heroBadge": "Geselecteerd werk",
     "heroDescription": "Werk waar ik het meest trots op ben.",
     "allProjects": "Alle projecten",
     "pageMetaTitle": "Projecten — Pagina {page}",
-    "pageMetaDescription": "Pagina {page} van {total} — geselecteerd werk, tools en open-source projecten door Astro Rocket.",
+    "pageMetaDescription": "Page {page} of {total} — projects from the AI & Cyber Exchange community.",
     "pageBadge": "Pagina {page} van {total}",
     "tagMetaTitle": "#{tag} — Projecten",
     "tagMetaDescription": "Projecten met tag \"{tag}\".",
@@ -219,392 +224,687 @@
     "credit": "Thema door <a href=\"https://hansmartens.dev\" class=\"transition-colors hover:text-foreground\" target=\"_blank\" rel=\"noopener noreferrer\">Hans Martens Dev</a>",
     "builtWith": "Gebouwd met Astro Rocket",
     "groups": {
-      "site": "Site",
-      "topics": "Onderwerpen",
-      "projects": "Projecten",
-      "questions": "Vragen?"
+      "site": "Explore",
+      "topics": "Topics",
+      "projects": "Projects",
+      "questions": "Get involved"
     },
-    "followOn": "Volg ons op {platform}"
+    "followOn": "Volg ons op {platform}",
+    "links": {
+      "join": "Join the community",
+      "present": "Present with us",
+      "upcoming": "Next session",
+      "contact": "Contact"
+    }
   },
   "pages": {
-    "about": {
+    "home": {
       "meta": {
-        "title": "Over — Gratis open-source Astro 7 thema",
-        "description": "Wat Astro Rocket is en hoe het gebouwd is: een gratis, razendsnel Astro 7 starter-thema met 44 ontworpen componenten, 8 kleurthema's, ingebouwde i18n en donkere modus."
+        "title": "Where AI, cybersecurity, and real-world innovation meet",
+        "description": "A community-driven professional forum connecting AI and cybersecurity companies, practitioners, leaders, students, and career transitioners through CyberSaturday sessions."
       },
       "hero": {
-        "badge": "Over",
-        "titleLead": "Astro Rocket —",
-        "typingWords": ["Razendsnel", "Starter-thema", "44 Componenten", "8 Thema's", "Donkere modus", "Ingebouwde i18n"],
-        "typingWordsMobile": ["Razendsnel", "Starter-thema", "8 Thema's", "Donkere modus", "Ingebouwde i18n"],
-        "description": "Een gratis, open-source Astro 7 starter-thema om alles op te bouwen."
+        "badge": "CyberSaturdays",
+        "title": "Where AI, cybersecurity, and real-world innovation meet.",
+        "description": "AI & Cyber Exchange connects the people building emerging technologies with the professionals, practitioners, students, and future cybersecurity leaders learning how to apply them.",
+        "primary": "Join the Community",
+        "secondary": "Present With Us"
       },
-      "whatYouGet": {
-        "badge": "Wat je krijgt",
-        "heading": "Alles wat een website nodig heeft",
-        "lead": "De componentenbibliotheek is het hart van het thema. Al het andere is al aan boord.",
-        "items": [
-          {
-            "icon": "component",
-            "title": "44 ontworpen componenten",
-            "description": "Van knoppen tot complete hero-secties: getypeerd, toegankelijk, consistent en gedocumenteerd in een live showcase."
-          },
-          {
-            "icon": "layout",
-            "title": "Pagina's om mee te starten",
-            "description": "Home, over, diensten, contact, blog, projecten en 404, volledig ontworpen en responsive, klaar om je eigen te maken."
-          },
-          {
-            "icon": "palette",
-            "title": "8 kleurthema's",
-            "description": "Wissel het complete kleurenpalet live vanuit de header. Inclusief lichte en donkere modus."
-          },
-          {
-            "icon": "book-open",
-            "title": "Blog met inhoudsopgave",
-            "description": "MDX, RSS, tags, reacties, gerelateerde posts en een scroll-spy inhoudsopgave. Schrijven en publiceren."
-          },
-          {
-            "icon": "image",
-            "title": "Projecten met galerijen",
-            "description": "Een portfoliosectie met fotogalerijen, videoslides, tags en een eigen inhoudsopgave."
-          },
-          {
-            "icon": "globe",
-            "title": "Volledige i18n, opt-in",
-            "description": "Blog, projecten, navigatie, formulieren en 404: allemaal per taal gelokaliseerd. Standaard uit, zonder kosten als je het niet gebruikt."
-          },
-          {
-            "icon": "search",
-            "title": "Zoeken op de site",
-            "description": "Snelle statische zoekfunctie (Pagefind) met een ⌘K-venster: nul JavaScript tot het opent."
-          },
-          {
-            "icon": "trending-up",
-            "title": "SEO-toolkit",
-            "description": "Metadata, sitemaps, structured data en OG-afbeeldingen, direct goed uit de doos."
-          },
-          {
-            "icon": "server",
-            "title": "Formulieren & deploy",
-            "description": "Spam-beschermde contact- en nieuwsbriefformulieren, en met één schakelaar deployen naar Vercel, Netlify of Cloudflare."
-          }
-        ]
+      "intro": {
+        "badge": "What we are",
+        "heading": "A professional forum for the people building and applying AI and security.",
+        "cardTitle": "Our mission",
+        "link": "More about AICX"
       },
-      "principles": {
-        "badge": "Ontwerpprincipes",
-        "heading": "Met intentie gebouwd",
-        "lead": "Elke keuze in Astro Rocket, van componentstructuur tot standaardconfiguratie, komt voort uit dezelfde drie principes.",
-        "items": [
-          { "icon": "zap", "title": "Prestaties eerst", "description": "Standaard nul JavaScript. Elk component is geoptimaliseerd voor snelheid, Core Web Vitals en compacte output." },
-          { "icon": "award", "title": "Ontwikkelaarservaring", "description": "Overal TypeScript, verstandige standaardinstellingen en een componentbibliotheek die je zo in elke pagina laat vallen." },
-          { "icon": "rocket", "title": "Modern vanaf de basis", "description": "Astro 7, Tailwind CSS 4 en een schone architectuur die eenvoudig uit te breiden en te onderhouden is." }
-        ]
+      "format": {
+        "badge": "CyberSaturdays",
+        "heading": "What happens at a CyberSaturday",
+        "lead": "Each session features one company, startup, or technology team working in AI, cybersecurity, agentic AI, or related emerging technology. Every session follows the same shape.",
+        "link": "How CyberSaturdays work"
       },
-      "stack": {
-        "badge": "Tools & techniek",
-        "title": "De stack",
-        "description": "De technologieën achter Astro Rocket, gekozen voor prestaties, een uitstekende ontwikkelaarservaring en betrouwbaarheid op de lange termijn."
+      "audience": {
+        "badge": "Who attends",
+        "heading": "One room, many stages of a career",
+        "lead": "Directors and students, architects and career transitioners. The mix is the point: everyone comes to learn something, and everyone has something to contribute.",
+        "link": "About the community"
       },
-      "faq": {
-        "badge": "Goed om te weten",
-        "heading": "Veelgestelde vragen",
-        "lead": "Alles wat je moet weten voordat je begint.",
-        "cards": [
-          {
-            "icon": "rocket",
-            "title": "Over Astro",
-            "items": [
-              { "question": "Wat is Astro?", "answer": "Astro is een modern webframework gebouwd voor content-gedreven sites. Het levert standaard nul JavaScript — er wordt alleen verstuurd wat de pagina echt nodig heeft. Het resultaat: snelle laadtijden, uitstekende Core Web Vitals-scores en compacte, onderhoudbare code." },
-              { "question": "Waarom bouwen met Astro?", "answer": "Astro is de juiste keuze voor content-rijke sites: minimale JavaScript, schone HTML, standaard goede SEO en een ontwikkelaarservaring die je niet in de weg zit. Het is compact, doelgericht en gebouwd om lang mee te gaan." },
-              { "question": "Wat kan ik bouwen met Astro Rocket?", "answer": "Portfolio's, zakelijke sites, marketingpagina's, blogs, documentatiesites — elk content-gedreven project. Astro Rocket geeft je de structuur, componenten en standaardinstellingen om direct van start te gaan." },
-              { "question": "Staat Astro Rocket in de officiële Astro-themamap?", "answer": "Ja. <a href=\"https://astro.build/themes/details/astro-rocket/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline underline-offset-2 decoration-brand-500 hover:text-brand-400 transition-colors\">Astro Rocket</a> staat in de officiële Astro-themamap als een gratis, productieklaar thema." },
-              { "question": "Blijft Astro Rocket nieuwe Astro-releases volgen?", "answer": "Ja. Astro Rocket wordt actief onderhouden en bijgewerkt om nieuwe Astro-releases te volgen. Volg de blog of houd de GitHub-repository in de gaten voor updates." }
-            ]
-          },
-          {
-            "icon": "code-2",
-            "title": "Het thema gebruiken",
-            "items": [
-              { "question": "Is het gratis te gebruiken?", "answer": "Ja, volledig gratis. Astro Rocket is MIT-gelicentieerd — gebruik het voor persoonlijke en commerciële projecten, geen naamsvermelding vereist." },
-              { "question": "Hoe wissel ik van thema?", "answer": "Wijzig één regel in je configuratie. Astro Rocket wordt geleverd met 8 met de hand gemaakte kleurthema's — wissel er direct tussen zonder ook maar één regel CSS aan te raken." },
-              { "question": "Ondersteunt het TypeScript?", "answer": "Ja, TypeScript wordt overal gebruikt. Alle componenten, configuraties en hulpprogramma's zijn volledig getypeerd." },
-              { "question": "Hoe voeg ik mijn eigen taal toe voor i18n?", "answer": "De i18n van Astro Rocket is config-gedreven. Voeg je locale toe aan het i18n-configuratiebestand, maak een bijbehorend vertaalbestand aan en de routering en interface passen zich automatisch aan." },
-              { "question": "Waar meld ik bugs of stel ik functies voor?", "answer": "Open een issue of start een discussie op de <a href=\"https://github.com/hansmartensdev/astro-rocket\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline underline-offset-2 decoration-brand-500 hover:text-brand-400 transition-colors\">GitHub-repository</a>. Bijdragen en feedback zijn altijd welkom." }
-            ]
-          }
-        ]
+      "paths": {
+        "attend": {
+          "badge": "For professionals",
+          "heading": "Why attend",
+          "lead": "Come for the demonstration, stay for the discussion.",
+          "cta": "Join the Community"
+        },
+        "present": {
+          "badge": "For companies and startups",
+          "heading": "Why present",
+          "lead": "An educational session for a technical audience — not a sales slot.",
+          "cta": "Learn about presenting"
+        }
       },
-      "openSource": {
-        "badge": "Open source",
-        "heading": "In de openbaarheid gebouwd",
-        "description": "Astro Rocket is gratis, open source en MIT-gelicentieerd. Bekijk de broncode, open issues, dien PR's in, of kloon het gewoon en bouw iets moois.",
-        "button": "Bekijk op GitHub",
-        "cards": [
-          { "title": "Gemaakt door Hans Martens Dev", "text": "Astro Rocket is ontworpen en gebouwd door <a href=\"https://hansmartens.dev\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline underline-offset-2 decoration-brand-500 hover:text-brand-400 transition-colors\">Hans Martens Dev</a> — ontwikkelaar van Astro-thema’s, gevestigd in Veghel." },
-          { "title": "MIT-licentie", "text": "Gratis te gebruiken in persoonlijke en commerciële projecten. Geen naamsvermelding vereist, al wordt een ster op GitHub altijd gewaardeerd." },
-          { "title": "Actief onderhouden", "text": "Het thema wordt up-to-date gehouden met nieuwe Astro-releases en regelmatig verbeterd op basis van feedback uit de community." }
-        ]
+      "topics": {
+        "badge": "What we explore",
+        "heading": "Where AI and security meet",
+        "link": "See all topic areas"
+      },
+      "companies": {
+        "badge": "Featured companies",
+        "heading": "Companies that have presented",
+        "lead": "Companies, startups, and technology teams that have brought their work to a CyberSaturday.",
+        "link": "Past sessions"
+      },
+      "upcoming": {
+        "badge": "Next session",
+        "heading": "The next CyberSaturday",
+        "link": "Session details"
       },
       "cta": {
-        "badge": "Aan de slag",
-        "heading": "Klaar om te bouwen?",
-        "description": "Kloon Astro Rocket, kies een thema en lanceer je volgende project in enkele minuten.",
-        "button": "Aan de slag"
+        "heading": "Learn from the people building what comes next.",
+        "description": "Join the community to hear about upcoming CyberSaturdays, or bring your team to present to a room of practitioners, leaders, and people entering the field.",
+        "primary": "Join the Community",
+        "secondary": "Present With Us"
       }
     },
-    "services": {
+    "about": {
       "meta": {
-        "title": "Diensten — Webdesign, webdevelopment & weboptimalisatie",
-        "description": "Freelance webdesign, webdevelopment en weboptimalisatie: strakke, razendsnelle custom Astro-websites. Een gratis eerste gesprek, één helder voorstel, één vaste prijs."
+        "title": "About",
+        "description": "AI & Cyber Exchange is a community-driven professional forum that connects AI and cybersecurity companies, startups, practitioners, technology leaders, students, and people transitioning into cybersecurity."
       },
-      "includedLabel": "Wat je krijgt",
       "hero": {
-        "badge": "Diensten",
-        "titleLead": "Webdesign, webdevelopment,",
-        "titleHighlight": "en weboptimalisatie",
-        "description": "Drie diensten, één product: een strakke, razendsnelle custom Astro-website waar je trots je naam op zet.",
-        "jumpLabels": ["Webdesign", "Webdevelopment", "Weboptimalisatie"]
+        "badge": "About AICX",
+        "title": "Connect the people building the future with the people preparing for it.",
+        "description": "AI & Cyber Exchange is a community-driven professional forum for AI and cybersecurity — built on education, exposure to technology, professional growth, and meaningful connections."
       },
-      "design": {
-        "badge": "Design",
-        "heading": "Webdesign",
-        "paragraphs": [
-          "Webdesign is hoe je website eruitziet en aanvoelt: de lay-out, de kleuren, de beelden en de manier waarop bezoekers hun weg vinden.",
-          "Ik ontwerp elke website rond jouw bedrijf — je merk, je content en de klanten die je wilt bereiken — zodat hij een sterke eerste indruk maakt en mensen direct naar de kern leidt. Strak, modern en gemaakt om te werken op elk scherm, van beeldscherm tot telefoon."
-        ],
-        "included": [
+      "story": {
+        "badge": "Who we are",
+        "heading": "A community, not a vendor"
+      },
+      "differentiator": {
+        "badge": "What makes it different"
+      },
+      "philosophy": {
+        "badge": "Community philosophy"
+      },
+      "whatWeAreNot": {
+        "badge": "What to expect",
+        "heading": "Built for learning",
+        "items": [
           {
-            "lead": "Een ontwerp dat van jou is",
-            "text": "gevormd rond je bedrijf, je merk en de klanten die je wilt bereiken."
+            "icon": "graduation-cap",
+            "title": "Educational first",
+            "description": "Sessions explain problems, technology, and lessons learned. They are not product pitches."
           },
           {
-            "lead": "Een sterke eerste indruk",
-            "text": "een strakke, moderne uitstraling die mensen meteen laat zien wie je bent."
+            "icon": "users",
+            "title": "Community-driven",
+            "description": "AICX is a forum run for its community. It is not a training company, a consultancy, or a vendor."
           },
           {
-            "lead": "Heldere navigatie",
-            "text": "een lay-out die bezoekers direct naar wat voor hen belangrijk is leidt."
-          },
-          {
-            "lead": "Een ontwerp voor elk scherm",
-            "text": "oogt en werkt prachtig op telefoon, tablet en desktop."
-          },
-          {
-            "lead": "Jouw content op z'n best",
-            "text": "je woorden en beelden in een lay-out die prettig leest en er goed uitziet."
+            "icon": "messages-square",
+            "title": "Two-way",
+            "description": "Questions and discussion are part of every session, not an afterthought at the end."
           }
-        ],
-        "ctaLabel": "Bespreek een ontwerpproject"
-      },
-      "development": {
-        "badge": "Development",
-        "heading": "Webdevelopment",
-        "paragraphs": [
-          "Webdevelopment is het bouwen van je website: het ontwerp omzetten in de code die in de browser van je bezoeker draait.",
-          "Ik bouw met Astro, een modern framework dat vertrouwd wordt voor een aantal van de snelste websites online. Dat maakt je site snel, veilig en jarenlang eenvoudig te onderhouden. En hij is vanaf dag één van jou, met de code, het domein en de hosting op jouw naam."
-        ],
-        "included": [
-          {
-            "lead": "Een razendsnelle website",
-            "text": "gebouwd met Astro, het framework achter een aantal van de snelste websites online."
-          },
-          {
-            "lead": "Een veilige, betrouwbare website",
-            "text": "eentje die veilig blijft en blijft werken, jaar na jaar."
-          },
-          {
-            "lead": "Volledig eigendom",
-            "text": "de code, het domein en de hosting vanaf dag één op jouw naam."
-          },
-          {
-            "lead": "Zorg na de lancering",
-            "text": "je website bijgehouden en beveiligd met het maandelijkse onderhoudsplan, terwijl jij onderneemt."
-          },
-          {
-            "lead": "Ruimte om te groeien",
-            "text": "plek voor nieuwe pagina's en functies wanneer je bedrijf ze nodig heeft."
-          }
-        ],
-        "ctaLabel": "Bekijk recente projecten"
-      },
-      "performance": {
-        "badge": "Optimalisatie",
-        "heading": "Weboptimalisatie",
-        "paragraphs": [
-          "Weboptimalisatie is het werk dat je website laat presteren: snel laden, goed scoren in zoekmachines en werken voor iedereen.",
-          "Ik bouw snelheid, SEO en toegankelijkheid vanaf de allereerste regel in, niet als sluitstuk. Zo is je website makkelijk te vinden en te begrijpen voor Google, opent hij snel voor elke bezoeker en kan iedereen die binnenkomt hem gebruiken."
-        ],
-        "included": [
-          {
-            "lead": "Een website die Google en AI vinden",
-            "text": "gebouwd zodat zoekmachines en AI-assistenten je pagina's kunnen lezen, begrijpen en aanraden."
-          },
-          {
-            "lead": "Snelheid op elk apparaat",
-            "text": "pagina's die snel blijven, ook op een telefoon of een tragere verbinding."
-          },
-          {
-            "lead": "Een website voor iedereen",
-            "text": "toegankelijk voor elke bezoeker, welk apparaat of welke beperking dan ook."
-          },
-          {
-            "lead": "Hoge prestatiescores",
-            "text": "sterke resultaten op Googles eigen snelheids- en kwaliteitschecks (Lighthouse)."
-          },
-          {
-            "lead": "Optimalisatie vanaf dag één",
-            "text": "snelheid, SEO en toegankelijkheid vanaf de allereerste regel ingebouwd."
-          }
-        ],
-        "ctaLabel": "Start een project"
-      },
-      "process": {
-        "badge": "Hoe het werkt",
-        "heading": "Hoe een project verloopt",
-        "lead": "Van je eerste bericht tot een live website.",
-        "steps": [
-          { "title": "Eerste contact", "description": "Je stuurt een bericht via het contactformulier. Ik reageer binnen een werkdag en we plannen een gratis, informatief gesprek over wat je nodig hebt. Vrijblijvend." },
-          { "title": "Voorstel", "description": "Na ons gesprek krijg je één helder document: wat ik bouw, wanneer het klaar is en de vaste prijs. Jij beslist met alles op tafel." },
-          { "title": "Ontwerp & bouw", "description": "Ik werk in korte cycli. Je volgt de voortgang op een staging-link en ziet je website vorm krijgen." },
-          { "title": "Lancering & ondersteuning", "description": "Je website gaat live op je eigen domein en hosting, op jouw naam. Daarna blijf ik bereikbaar, en voor regelmatige updates is er het maandelijkse onderhoudsplan." }
         ]
       },
       "faq": {
-        "badge": "Vragen",
-        "heading": "Vragen en antwoorden",
-        "lead": "De dingen die klanten vragen voordat we beginnen.",
-        "cards": [
+        "badge": "FAQ",
+        "heading": "Common questions",
+        "items": [
           {
-            "icon": "tag",
-            "title": "Voordat we beginnen",
-            "items": [
-              { "question": "Wat kost een website?", "answer": "Elk project krijgt één vaste prijs, afgesproken voordat we beginnen. Geen uurtje-factuurtje, geen verrassingen achteraf. Het gratis gesprek — en de gratis check, als er al een website is — vertelt me wat je project nodig heeft, en je krijgt de prijs in één helder voorstel." },
-              { "question": "Hoe lang duurt een project?", "answer": "Dat hangt af van de omvang van de website. Het voorstel noemt de planning samen met de prijs, zodat je beide kent voordat we beginnen." },
-              { "question": "Wat gebeurt er met mijn huidige website?", "answer": "Die blijft online tot de nieuwe klaar is. Je content, je webadres en je Google-posities gaan mee. Ik bekijk je huidige website vóór ons eerste gesprek, zodat je vanaf het begin duidelijke antwoorden krijgt." },
-              { "question": "Moet ik zelf hosting of een domein regelen?", "answer": "Nee. Ik zet de hosting en het domein voor je op, op jouw eigen naam. Heb je al een domein, dan houden we dat gewoon." },
-              { "question": "Moeten we elkaar in persoon ontmoeten?", "answer": "Dat hoeft niet. De meeste projecten verlopen volledig via telefoon, video en e-mail. Ik werk met klanten wereldwijd, en tijdzones zijn zelden een probleem." }
-            ]
+            "question": "What is a CyberSaturday?",
+            "answer": "A recurring session where one company, startup, or technology team working in AI, cybersecurity, or related emerging technology demonstrates its work and discusses it with the community."
           },
           {
-            "icon": "user",
-            "title": "Samenwerken met mij",
-            "items": [
-              { "question": "Ben je een bedrijf of bureau?", "answer": "Ik ben een eenmansbedrijf: een freelancer, geen bureau. Je werkt rechtstreeks met degene die het werk doet, van het eerste gesprek tot de afgeronde website. Geen salesteam, geen accountmanagers, geen overdrachten." },
-              { "question": "Kan ik de website zelf aanpassen na de lancering?", "answer": "Je kunt je wijzigingen simpelweg naar mij sturen, en daar is het maandelijkse onderhoudsplan precies voor. Wil je de website zelf bewerken, zeg het dan in het eerste gesprek en ik richt de site daarop in." },
-              { "question": "Bouw je ook webshops?", "answer": "Nee. Grote webwinkels zijn het enige dat ik niet bouw. Al het andere dat een custom Astro-website nodig heeft, bouw ik: vertel me in het eerste gesprek wat je voor ogen hebt, en ik ben eerlijk over of ik de juiste bouwer ervoor ben." },
-              { "question": "Is de website echt van mij?", "answer": "Helemaal. Het domein, de hosting en de code staan vanaf dag één op jouw naam. Wil je ooit verder, dan neem je alles mee: je zit nergens aan vast." },
-              { "question": "Wat als er na de lancering iets kapotgaat?", "answer": "Er kan maar weinig kapot: de website heeft geen plugins en geen database die kunnen falen. En ik blijf bereikbaar na de lancering; voor regelmatige updates en monitoring is er het maandelijkse onderhoudsplan." }
-            ]
+            "question": "Who can attend?",
+            "answer": "Anyone with an interest in AI and cybersecurity — from directors and senior practitioners to engineers, students, early-career professionals, and people transitioning into the field."
+          },
+          {
+            "question": "Do I need a security background to get value from a session?",
+            "answer": "No. Presenters explain the problem they are solving and why it matters before they demonstrate anything, and attendees are encouraged to ask questions at any level."
+          },
+          {
+            "question": "Are sessions sales presentations?",
+            "answer": "No. Sessions focus on practical demonstrations, real-world use cases, emerging challenges, and the ideas behind the technology — not simply product promotion."
+          },
+          {
+            "question": "How can my company present?",
+            "answer": "Get in touch through the Present With Us page. Tell us about your team, what you are building, and what you would like to show the community."
           }
         ]
       },
       "cta": {
-        "badge": "Laten we praten",
-        "heading": "Laten we het over jouw wensen hebben",
-        "description": "Het eerste gesprek is gratis en informatief, geheel vrijblijvend: per telefoon, video of e-mail. Je krijgt eerlijke antwoorden, en na het gesprek één helder voorstel met een planning en een vaste prijs.",
-        "primary": "Stuur een bericht",
-        "secondary": "Meer over mij"
+        "heading": "Be part of the exchange.",
+        "description": "Attend a CyberSaturday, bring your questions, or present your team’s work to the community.",
+        "primary": "Join the Community",
+        "secondary": "Present With Us"
+      }
+    },
+    "cybersaturdays": {
+      "meta": {
+        "title": "CyberSaturdays",
+        "description": "CyberSaturday sessions: one AI or cybersecurity company, startup, or technology team demonstrates its technology and discusses it with the community."
+      },
+      "hero": {
+        "badge": "CyberSaturdays",
+        "title": "CyberSaturdays",
+        "description": "One company, startup, or technology team. A real demonstration. A room full of questions from people across AI and cybersecurity.",
+        "primary": "See the next session",
+        "secondary": "Present With Us"
+      },
+      "what": {
+        "badge": "The session",
+        "heading": "Direct exposure to the people building the technology",
+        "paragraphs": [
+          "Each CyberSaturday features one company, startup, or technology team working in AI, cybersecurity, agentic AI, or related emerging technology.",
+          "Presenters demonstrate their technologies, explain the problems they are solving, discuss real-world use cases, and take questions directly from the audience. The purpose is educational and community-oriented."
+        ]
+      },
+      "format": {
+        "badge": "The format",
+        "heading": "Five parts, every session",
+        "lead": "Every CyberSaturday follows the same shape, so you know what you are getting — whether you are attending or presenting."
+      },
+      "topics": {
+        "badge": "What we explore",
+        "heading": "Topic areas"
+      },
+      "attend": {
+        "badge": "Why attend",
+        "heading": "What you take away",
+        "lead": "Whether you lead a security team or are preparing for your first role, a CyberSaturday gives you a direct look at how emerging technology is being built and applied."
+      },
+      "cta": {
+        "heading": "Your next CyberSaturday",
+        "description": "See who is presenting next, or join the community to hear about every session.",
+        "primary": "See the next session",
+        "secondary": "Join the Community"
+      }
+    },
+    "present": {
+      "meta": {
+        "title": "Present With Us",
+        "description": "Present your AI or cybersecurity technology at a CyberSaturday: demonstrate it to a diverse technical audience of leaders, practitioners, engineers, students, and career transitioners."
+      },
+      "hero": {
+        "badge": "For companies, startups, and technology teams",
+        "title": "Present your work to people who will ask good questions.",
+        "description": "CyberSaturdays give AI and cybersecurity teams a room of security leaders, practitioners, engineers, and people entering the field — and the time to show what they are building.",
+        "primary": "Apply to present",
+        "secondary": "How sessions work"
+      },
+      "why": {
+        "badge": "Why present",
+        "heading": "What presenting offers your team",
+        "lead": "Presenting is an opportunity, not a transaction. What comes of it depends on the conversations it starts."
+      },
+      "audience": {
+        "badge": "Who you will present to",
+        "heading": "A room that spans the industry",
+        "lead": "The community brings together people at every stage of a career in AI and cybersecurity."
+      },
+      "format": {
+        "badge": "Session format",
+        "heading": "What a session looks like",
+        "lead": "Sessions follow a consistent shape. You bring the problem, the technology, and the lessons; the community brings the questions."
+      },
+      "expectations": {
+        "badge": "What makes a good session",
+        "heading": "Teach, demonstrate, discuss",
+        "items": [
+          {
+            "title": "Lead with the problem",
+            "description": "Start with what you are solving and why it matters to the people in the room."
+          },
+          {
+            "title": "Show it working",
+            "description": "A live demonstration of your technology, platform, or workflow is the centre of the session."
+          },
+          {
+            "title": "Connect it to real environments",
+            "description": "Explain how it fits into real-world AI and cybersecurity work, including where it does not."
+          },
+          {
+            "title": "Share what you learned",
+            "description": "Lessons from building or deploying are often what the audience remembers most."
+          },
+          {
+            "title": "Leave room for questions",
+            "description": "Expect questions from leaders, practitioners, and students alike."
+          },
+          {
+            "title": "Educate, don’t pitch",
+            "description": "The community values substance over promotion. A useful session is the best introduction to your company."
+          }
+        ]
+      },
+      "steps": {
+        "badge": "How to apply",
+        "heading": "Getting on the schedule",
+        "items": [
+          {
+            "title": "Reach out",
+            "description": "Tell us about your company or team and what you are building."
+          },
+          {
+            "title": "Shape the session",
+            "description": "We talk through the problem, the demonstration, and what the audience will take away."
+          },
+          {
+            "title": "Present",
+            "description": "Demonstrate your technology at a CyberSaturday and take questions from the community."
+          }
+        ]
+      },
+      "cta": {
+        "heading": "Bring your technology to the community.",
+        "description": "Tell us about your team and what you would like to show. We will follow up to talk through a session.",
+        "primary": "Apply to present",
+        "secondary": "See past sessions"
+      }
+    },
+    "sessions": {
+      "meta": {
+        "title": "Past Sessions",
+        "description": "Past CyberSaturday sessions and the companies that have presented to the AI & Cyber Exchange community."
+      },
+      "hero": {
+        "badge": "Session archive",
+        "title": "Past sessions and featured companies",
+        "description": "The companies, startups, and technology teams that have presented at a CyberSaturday. Session details and recordings are added here as they become available."
+      },
+      "companies": {
+        "badge": "Companies that have joined us",
+        "heading": "Featured companies",
+        "lead": "Companies that have presented to the community."
+      },
+      "archive": {
+        "badge": "Archive",
+        "heading": "Session archive"
+      },
+      "cta": {
+        "heading": "Could your team be next?",
+        "description": "We are always looking for companies and technology teams with something real to demonstrate.",
+        "primary": "Present With Us",
+        "secondary": "See the next session"
+      }
+    },
+    "community": {
+      "meta": {
+        "title": "Community",
+        "description": "The AI & Cyber Exchange community: cybersecurity leaders, experienced practitioners, technology professionals, students, and people transitioning into cybersecurity."
+      },
+      "hero": {
+        "badge": "The community",
+        "title": "Everyone comes to learn something.",
+        "description": "AI & Cyber Exchange brings together cybersecurity and AI professionals, technology companies, startups, researchers, practitioners, students, and people transitioning into the field.",
+        "primary": "Join the Community",
+        "secondary": "See the next session"
+      },
+      "audience": {
+        "badge": "Who is here",
+        "heading": "The people in the room",
+        "lead": "A professional community that stays accessible to people entering the field."
+      },
+      "philosophy": {
+        "badge": "How we think about it"
+      },
+      "attend": {
+        "badge": "Why attend",
+        "heading": "What members get from a session"
+      },
+      "participate": {
+        "badge": "Ways to take part",
+        "heading": "How to get involved",
+        "items": [
+          {
+            "icon": "calendar",
+            "title": "Attend a CyberSaturday",
+            "description": "Join a session, watch the demonstration, and take part in the discussion."
+          },
+          {
+            "icon": "message-circle-question",
+            "title": "Bring your questions",
+            "description": "Questions from every level of experience make the discussion better for everyone."
+          },
+          {
+            "icon": "lightbulb",
+            "title": "Suggest a company or topic",
+            "description": "Know a team doing interesting work in AI or security? Tell us about them."
+          },
+          {
+            "icon": "mic",
+            "title": "Present your work",
+            "description": "Building something in AI or cybersecurity? Demonstrate it to the community."
+          }
+        ]
+      },
+      "join": {
+        "badge": "Join",
+        "heading": "Join the community",
+        "description": "Get in touch to hear about upcoming CyberSaturdays and how to attend. Tell us a little about yourself and what you are interested in.",
+        "primary": "Join the Community",
+        "secondary": "Present With Us"
+      }
+    },
+    "upcoming": {
+      "meta": {
+        "title": "Upcoming Session",
+        "description": "The next CyberSaturday session at AI & Cyber Exchange: who is presenting, when, and how to attend."
+      },
+      "hero": {
+        "badge": "CyberSaturdays",
+        "title": "The next CyberSaturday",
+        "description": "Who is presenting next, when, and how to attend."
+      },
+      "later": {
+        "badge": "Also scheduled",
+        "heading": "Later sessions"
+      },
+      "empty": {
+        "title": "The next session will be announced soon",
+        "description": "Join the community to hear who is presenting at the next CyberSaturday and how to attend.",
+        "primary": "Join the Community",
+        "secondary": "Browse past sessions"
+      },
+      "format": {
+        "badge": "What to expect",
+        "heading": "How the session runs",
+        "link": "More about CyberSaturdays"
+      },
+      "cta": {
+        "heading": "Want to present at a future session?",
+        "description": "Companies, startups, and technology teams working in AI and cybersecurity can apply to present.",
+        "primary": "Present With Us",
+        "secondary": "Join the Community"
       }
     },
     "contact": {
       "meta": {
         "title": "Contact",
-        "description": "Iets nieuws van plan? Ik ontwerp en bouw nieuwe websites vanaf nul — vertel me over je project en ik reageer binnen 1 werkdag."
+        "description": "Get in touch with AI & Cyber Exchange to join the community, present at a CyberSaturday, or ask a question."
       },
       "hero": {
-        "badge": "Start een project",
-        "titleLead": "Vertel me over je",
-        "titleHighlight": "nieuwe project",
-        "description": "Ik hoor graag van je. Stuur een bericht via het formulier hieronder, of gebruik een van de andere kanalen hieronder."
+        "badge": "Contact",
+        "title": "Get in touch",
+        "description": "Join the community, present at a CyberSaturday, or ask us a question. Send a message and we will get back to you."
       },
-      "formTitle": "Projectdetails",
-      "channelsTitle": "Andere kanalen",
-      "channelsSubtitle": "Liever een direct kanaal? Kies wat het beste werkt.",
-      "emailLabel": "E-mail",
-      "emailNote": "Stuur een bericht",
-      "socialNote": "Volg mee",
-      "basedIn": "Gevestigd in {country}"
-    },
-    "home": {
-      "meta": {
-        "title": "Gratis open-source Astro 7 thema",
-        "description": "Astro Rocket is een gratis, razendsnel Astro 7 starter-thema om alles op te bouwen — met 44 ontworpen componenten, 8 kleurthema's, donkere modus en ingebouwde i18n aan boord."
-      },
-      "hero": {
-        "badge": "Beschikbaar voor nieuwe projecten",
-        "titleLine1": "Astro Rocket —",
-        "titleLine2": "Webdesigner",
-        "titleLine3": "& Ontwikkelaar",
-        "description": "Een gratis, razendsnel Astro 7 starter-thema om alles op te bouwen: 44 ontworpen componenten, 8 kleurthema's en donkere modus.",
-        "descriptionMobile": "Een gratis, razendsnel Astro 7 starter-thema om alles op te bouwen: 44 ontworpen componenten en 8 kleurthema's.",
-        "github": "Bekijk op GitHub",
-        "getStarted": "Aan de slag"
-      },
-      "services": {
-        "badge": "Wat ik doe",
-        "heading": "Ontwerpen, bouwen, optimaliseren",
-        "lead": "Elk project krijgt alle drie de diensten.",
-        "learnMore": "Meer weten",
-        "cards": [
-          { "icon": "layout", "title": "Webdesign", "description": "Interfaces die vanzelfsprekend aanvoelen. Lay-outs gevormd rond je content, je merk en hoe mensen echt lezen op een scherm." },
-          { "icon": "code", "title": "Webdevelopment", "description": "Sites gebouwd om lang mee te gaan. Astro, Tailwind en een schone architectuur: snel op dag één, eenvoudig te onderhouden op dag 500." },
-          { "icon": "trending-up", "title": "Weboptimalisatie", "description": "SEO, Core Web Vitals en toegankelijkheid, vanaf dag één ingebouwd, zodat je site scoort, snel laadt en werkt voor elke bezoeker." }
-        ]
-      },
-      "workWithMe": {
-        "badge": "Samenwerken",
-        "heading": "Laten we jouw website bouwen",
-        "lead": "Wat je krijgt als we samenwerken.",
-        "cards": [
-          { "icon": "palette", "title": "Custom design", "description": "Ontworpen rond je bedrijf, je content en je klanten." },
-          { "icon": "zap", "title": "Een razendsnelle website", "description": "Pagina's die direct openen, op elke telefoon en elke verbinding." },
-          { "icon": "search", "title": "Gevonden door Google en AI", "description": "Elke pagina zo gebouwd dat zoekmachines en AI-assistenten hem goed lezen en klanten je vinden." },
-          { "icon": "shield-check", "title": "Geen onderhoud", "description": "Bijgehouden en beveiligd met het onderhoudsplan, zodat jij je op je bedrijf kunt richten." }
-        ],
-        "cta": "Lees mijn dienstenpagina"
-      },
-      "portfolio": {
-        "badge": "Geselecteerd werk",
-        "heading": "Projecten die ik heb gebouwd",
-        "lead": "Een selectie van recent werk.",
-        "viewAll": "Bekijk alle projecten"
-      },
-      "testimonials": {
-        "badge": "Aanbevelingen",
-        "heading": "Wat klanten zeggen",
-        "lead": "Echte woorden uit afgeronde projecten.",
+      "reasons": {
+        "heading": "What can we help with?",
         "items": [
-          { "quote": "De nieuwe site werd op tijd gelanceerd en haalde elk doel dat we stelden. De prestaties verbeterden enorm — laadtijden daalden en de reacties van onze klanten zijn overweldigend positief.", "name": "Alex Morgan", "role": "Oprichter, Bright Studio" },
-          { "quote": "Helder van het eerste gesprek tot de uiteindelijke oplevering. De juiste vragen werden gesteld, we werden overal bij betrokken en het eindresultaat overtrof wat we ons hadden voorgesteld. Een aanrader zonder twijfel.", "name": "Sarah Chen", "role": "CEO, Luma Agency" }
+          {
+            "id": "join",
+            "icon": "users",
+            "title": "Join the community",
+            "description": "Hear about upcoming CyberSaturdays and how to attend.",
+            "subject": "Joining the community"
+          },
+          {
+            "id": "present",
+            "icon": "mic",
+            "title": "Present with us",
+            "description": "Tell us about your company or team and what you would like to demonstrate.",
+            "subject": "Presenting at a CyberSaturday"
+          },
+          {
+            "id": "other",
+            "icon": "message-square",
+            "title": "Something else",
+            "description": "Questions, ideas, or suggestions for a company or topic.",
+            "subject": ""
+          }
         ]
       },
-      "aboutTeaser": {
-        "badge": "Over mij",
-        "headingLine1": "Designer, ontwikkelaar,",
-        "headingLine2": "en blogger.",
-        "para1WithLocation": "Zestien jaar praktijkervaring, gevestigd in {location} en beschikbaar voor klanten wereldwijd. Ik bouw met Astro omdat het aansluit bij hoe ik over het web denk: compact, doelgericht en gebouwd om lang mee te gaan.",
-        "para1NoLocation": "Zestien jaar praktijkervaring en beschikbaar voor klanten wereldwijd. Ik bouw met Astro omdat het aansluit bij hoe ik over het web denk: compact, doelgericht en gebouwd om lang mee te gaan.",
-        "para2": "Op de blog deel ik de ideeën en keuzes die mijn werk vormgeven.",
-        "moreAboutMe": "Meer over mij",
-        "statsIntro": "Een paar dingen over mij.",
-        "stat1": "16 jaar ervaring",
-        "stat2": "Bouwen met Astro",
-        "stat3": "Wereldwijd werkzaam",
-        "basedIn": "Gevestigd in"
-      },
-      "blog": {
-        "badge": "Van de blog",
-        "heading": "Uitgelicht",
-        "viewAll": "Bekijk alle berichten"
-      },
-      "cta": {
-        "badge": "Laten we praten",
-        "heading": "Laten we het over jouw wensen hebben",
-        "description": "Het eerste gesprek is gratis en informatief, geheel vrijblijvend. En van het eerste gesprek tot de uiteindelijke oplevering: je werkt met mij.",
-        "primary": "Stuur een bericht",
-        "secondary": "Meer over mij"
-      }
+      "formTitle": "Send a message",
+      "formHint": "Presenting? Include your company, what you are building, and what you would like to show.",
+      "channelsTitle": "Other ways to reach us",
+      "emailLabel": "Email",
+      "emailNote": "We read every message.",
+      "socialNote": "Follow along"
     }
+  },
+  "aicx": {
+    "name": "AI & Cyber Exchange",
+    "shortName": "AICX",
+    "tagline": "Where AI, cybersecurity, and real-world innovation meet.",
+    "positioning": "AI & Cyber Exchange brings together the people building emerging AI and cybersecurity technologies with the people learning, applying, and shaping them.",
+    "mission": "Connect the people building the future with the people preparing for it.",
+    "longDescription": [
+      "AI & Cyber Exchange brings together cybersecurity and AI professionals, technology companies, startups, researchers, practitioners, students, and people transitioning into the field to learn directly from the people building and applying today's emerging technologies.",
+      "At each CyberSaturday, we feature a company, startup, or technology team working at the intersection of AI and cybersecurity. Sessions focus on practical demonstrations, real-world use cases, emerging security challenges, and the ideas behind the technologies — not simply product promotion.",
+      "The goal is to create a space where experienced professionals can discover emerging technologies, practitioners can expand their knowledge, and people entering the field can learn from the companies and experts actively shaping it."
+    ],
+    "differentiator": {
+      "heading": "Not another presentation-only meetup.",
+      "lead": "AI & Cyber Exchange is built around direct exposure to the people and technologies shaping the industry. Each session brings a company, startup, or technology team into the community to:",
+      "items": [
+        "Demonstrate their technology",
+        "Explain the problem they are solving",
+        "Show real-world use cases",
+        "Discuss emerging challenges",
+        "Share lessons from building or deploying their solutions",
+        "Answer questions from the community"
+      ]
+    },
+    "format": {
+      "steps": [
+        {
+          "icon": "compass",
+          "title": "Discover",
+          "description": "The company introduces the problem and why it matters."
+        },
+        {
+          "icon": "monitor-play",
+          "title": "See",
+          "description": "The team demonstrates its technology, platform, workflow, or solution."
+        },
+        {
+          "icon": "layers",
+          "title": "Understand",
+          "description": "Attendees learn how the technology fits into real-world AI and cybersecurity environments."
+        },
+        {
+          "icon": "messages-square",
+          "title": "Discuss",
+          "description": "The community interacts directly with the presenters."
+        },
+        {
+          "icon": "handshake",
+          "title": "Connect",
+          "description": "Attendees and presenters can continue conversations beyond the session."
+        }
+      ]
+    },
+    "audience": {
+      "groups": [
+        {
+          "icon": "briefcase",
+          "title": "Cybersecurity Leaders",
+          "description": "Directors, managers, security leaders, and technology executives."
+        },
+        {
+          "icon": "shield-check",
+          "title": "Experienced Practitioners",
+          "description": "Security engineers, architects, SOC professionals, threat intelligence professionals, cybersecurity analysts, and AI/security practitioners."
+        },
+        {
+          "icon": "code",
+          "title": "Technology Professionals",
+          "description": "Software engineers, AI engineers, developers, and cloud and infrastructure professionals."
+        },
+        {
+          "icon": "graduation-cap",
+          "title": "Emerging Professionals",
+          "description": "Students, aspiring cybersecurity professionals, career transitioners, and early-career practitioners."
+        }
+      ]
+    },
+    "topics": {
+      "note": "Each session focuses on its presenter’s work, so no single session covers every area. Over time, these are the areas the community explores.",
+      "areas": [
+        {
+          "icon": "bot",
+          "title": "AI & Agentic Systems",
+          "items": [
+            "Agentic AI",
+            "AI agents",
+            "Multi-agent systems",
+            "AI automation",
+            "Emerging AI applications"
+          ]
+        },
+        {
+          "icon": "brain-circuit",
+          "title": "AI Security",
+          "items": [
+            "Securing AI systems",
+            "AI threats and attacks",
+            "AI governance",
+            "AI safety",
+            "Model security",
+            "AI deception and manipulation"
+          ]
+        },
+        {
+          "icon": "shield",
+          "title": "Cybersecurity",
+          "items": [
+            "Threat detection",
+            "Security operations",
+            "Threat intelligence",
+            "Identity and access",
+            "Application security",
+            "Cloud security",
+            "Security platforms"
+          ]
+        },
+        {
+          "icon": "telescope",
+          "title": "Emerging Technology",
+          "items": [
+            "Cybersecurity startups",
+            "Security research",
+            "Emerging AI technologies",
+            "New approaches to security",
+            "Technologies changing how organizations operate"
+          ]
+        }
+      ]
+    },
+    "whyAttend": {
+      "items": [
+        {
+          "icon": "radar",
+          "title": "Explore emerging technology",
+          "description": "Get early exposure to AI and cybersecurity technologies as they are being built and deployed."
+        },
+        {
+          "icon": "monitor-play",
+          "title": "See real demonstrations",
+          "description": "Watch the technology work, not only the slides that describe it."
+        },
+        {
+          "icon": "users",
+          "title": "Learn from the builders",
+          "description": "Hear directly from the practitioners and technology teams doing the work."
+        },
+        {
+          "icon": "message-circle-question",
+          "title": "Ask your questions",
+          "description": "Put your questions to the presenters and hear what others in the room want to know."
+        },
+        {
+          "icon": "lightbulb",
+          "title": "Discover new approaches",
+          "description": "See different ways teams are approaching security and AI problems."
+        },
+        {
+          "icon": "network",
+          "title": "Widen your perspective",
+          "description": "Connect with companies and professionals across the industry, at every stage of their careers."
+        }
+      ]
+    },
+    "whyPresent": {
+      "items": [
+        {
+          "icon": "users",
+          "title": "Reach a diverse technical audience",
+          "description": "Present to security leaders, practitioners, engineers, AI professionals, and people entering the field."
+        },
+        {
+          "icon": "monitor-play",
+          "title": "Demonstrate your technology directly",
+          "description": "Show how it works in a live session rather than describing it from a distance."
+        },
+        {
+          "icon": "badge-check",
+          "title": "Build technical credibility",
+          "description": "Explain the problem, the approach, and the trade-offs to an audience that asks informed questions."
+        },
+        {
+          "icon": "messages-square",
+          "title": "Start meaningful conversations",
+          "description": "Open discussions with practitioners and leaders who work on the problems you are solving."
+        },
+        {
+          "icon": "sparkles",
+          "title": "Introduce emerging technology",
+          "description": "Bring new ideas and approaches to a community that is actively looking for them."
+        },
+        {
+          "icon": "graduation-cap",
+          "title": "Give back",
+          "description": "Help educate students, career transitioners, and professionals growing into the field."
+        },
+        {
+          "icon": "handshake",
+          "title": "Meet future collaborators",
+          "description": "Create opportunities to connect with potential customers, partners, collaborators, and future talent."
+        }
+      ]
+    },
+    "philosophy": {
+      "words": [
+        "Learn",
+        "Demonstrate",
+        "Question",
+        "Connect"
+      ],
+      "paragraphs": [
+        "We believe professional growth happens when people have access to ideas, technology, and the people behind them.",
+        "That means creating a space where an experienced security architect can discover a new technology, a student can see how an emerging company is solving a real problem, and a career transitioner can learn directly from professionals working in the field."
+      ],
+      "closing": "Everyone comes to learn something. Everyone has something to contribute."
+    },
+    "session": {
+      "badgeUpcoming": "Upcoming",
+      "badgePast": "Past session",
+      "presentedBy": "Presented by",
+      "date": "Date",
+      "location": "Location",
+      "topics": "Topics",
+      "register": "Register",
+      "recording": "Watch the recording",
+      "website": "Company website",
+      "dateTba": "Date to be announced",
+      "opensInNewTab": "{label} (opens in a new tab)"
+    },
+    "visual": {
+      "label": "Diagram: companies and technology teams on one side, the community on the other, connected through CyberSaturday sessions.",
+      "builders": "Builders",
+      "community": "Community",
+      "hub": "CyberSaturdays",
+      "builderNodes": [
+        "Startups",
+        "Tech teams",
+        "Researchers"
+      ],
+      "communityNodes": [
+        "Leaders",
+        "Practitioners",
+        "Students"
+      ]
+    },
+    "logoAlt": "AI & Cyber Exchange logo: a padlock inside a network hexagon, beside the AICX wordmark"
   }
 }

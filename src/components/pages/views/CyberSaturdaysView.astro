@@ -1,0 +1,148 @@
+---
+/**
+ * CyberSaturdaysView — what a CyberSaturday is, the five-part format, the
+ * topic areas and why to attend.
+ *
+ * Shared by `/cybersaturdays` and `/<locale>/cybersaturdays`. Copy from
+ * `pages.cybersaturdays.*` and the shared `aicx.*` keys.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Hero } from '@/components/hero';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import SectionHeading from '@/components/aicx/SectionHeading.astro';
+import FormatSteps from '@/components/aicx/FormatSteps.astro';
+import TopicAreas from '@/components/aicx/TopicAreas.astro';
+import ReasonGrid from '@/components/aicx/ReasonGrid.astro';
+import ClosingCta from '@/components/aicx/ClosingCta.astro';
+import type Dictionary from '@/i18n/en.json';
+import { tData, defaultLocale, localizedPath } from '@/i18n';
+import { getJoinLink, getPresentLink } from '@/lib/community';
+
+interface Props {
+  locale?: string;
+}
+
+const { locale = defaultLocale } = Astro.props;
+const page = tData<(typeof Dictionary)['pages']['cybersaturdays']>('pages.cybersaturdays', locale)!;
+const aicx = tData<(typeof Dictionary)['aicx']>('aicx', locale)!;
+const upcoming = { href: localizedPath('/upcoming', locale), external: false };
+---
+
+<PageLayout title={page.meta.title} description={page.meta.description} footerBackground="default">
+  <Hero layout="centered" size="sm" class="isolate pb-[var(--space-section-sm)]" showHeroHalo>
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="calendar" size="sm" />
+      {page.hero.badge}
+    </Badge>
+    <h1 slot="title" class="!text-4xl sm:!text-5xl lg:!text-6xl">{page.hero.title}</h1>
+    <p slot="description">{page.hero.description}</p>
+    <Fragment slot="actions">
+      <Button size="lg" href={upcoming.href}>
+        {page.hero.primary}
+        <Icon name="arrow-right" size="sm" />
+      </Button>
+      <Button
+        size="lg"
+        variant="outline"
+        href={getPresentLink(locale).href}
+        class="hero-btn-opaque"
+      >
+        <Icon name="mic" size="sm" />
+        {page.hero.secondary}
+      </Button>
+    </Fragment>
+  </Hero>
+
+  <!-- What a session is -->
+  <section class="bg-background-secondary border-border border-t py-[var(--space-section-md)]">
+    <div class="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-2 lg:items-center lg:gap-16">
+      <div class="flex flex-col gap-6">
+        <SectionHeading
+          badge={page.what.badge}
+          icon="presentation"
+          heading={page.what.heading}
+          align="left"
+        />
+        {
+          page.what.paragraphs.map((text: string, i: number) => (
+            <p
+              class="text-foreground-muted text-lg leading-relaxed"
+              data-reveal
+              data-reveal-delay={i || undefined}
+            >
+              {text}
+            </p>
+          ))
+        }
+      </div>
+      <Card variant="elevated" padding="lg" data-reveal data-reveal-delay="1">
+        <p class="font-display text-foreground mb-5 text-lg font-semibold">
+          {aicx.differentiator.heading}
+        </p>
+        <ul class="flex flex-col gap-3">
+          {
+            aicx.differentiator.items.map((item: string) => (
+              <li class="flex items-start gap-3">
+                <Icon name="check" size="sm" class="text-brand-500 mt-1 shrink-0" />
+                <span class="text-foreground-muted">{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </Card>
+    </div>
+  </section>
+
+  <!-- Format -->
+  <section
+    id="format"
+    class="bg-background border-border scroll-mt-20 border-t py-[var(--space-section-md)]"
+  >
+    <div class="mx-auto flex max-w-6xl flex-col gap-12 px-6">
+      <SectionHeading
+        badge={page.format.badge}
+        icon="route"
+        heading={page.format.heading}
+        lead={page.format.lead}
+      />
+      <FormatSteps locale={locale} />
+    </div>
+  </section>
+
+  <!-- Topics -->
+  <section
+    id="topics"
+    class="bg-background-secondary border-border scroll-mt-20 border-t py-[var(--space-section-md)]"
+  >
+    <div class="mx-auto flex max-w-6xl flex-col gap-10 px-6">
+      <SectionHeading badge={page.topics.badge} icon="telescope" heading={page.topics.heading} />
+      <TopicAreas locale={locale} />
+    </div>
+  </section>
+
+  <!-- Why attend -->
+  <section class="bg-background border-border border-t py-[var(--space-section-md)]">
+    <div class="mx-auto flex max-w-6xl flex-col gap-10 px-6">
+      <SectionHeading
+        badge={page.attend.badge}
+        icon="user-round"
+        heading={page.attend.heading}
+        lead={page.attend.lead}
+      />
+      <ReasonGrid locale={locale} source="aicx.whyAttend" columns={3} />
+    </div>
+  </section>
+
+  <section class="bg-background-secondary border-border border-t py-[var(--space-section-md)]">
+    <ClosingCta
+      locale={locale}
+      heading={page.cta.heading}
+      description={page.cta.description}
+      primary={{ label: page.cta.primary, ...upcoming }}
+      secondary={{ label: page.cta.secondary, ...getJoinLink(locale) }}
+    />
+  </section>
+</PageLayout>

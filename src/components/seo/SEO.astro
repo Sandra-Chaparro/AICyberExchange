@@ -5,6 +5,8 @@ import {
   getLocales,
   defaultLocale,
   swapLocaleInPath,
+  getLocaleFromPath,
+  t,
 } from '@/i18n';
 
 interface Props {
@@ -47,6 +49,9 @@ const {
 // and spends ~16 characters of a box that truncates around 60-70.
 const pageTitle = title ? `${title} — ${siteConfig.name}` : siteConfig.name;
 const socialTitle = title || siteConfig.name;
+// A page's own image is described by the page (or falls back to its title);
+// the shared default image is the logo, so it gets the logo's description.
+const ogImageAlt = imageAlt || (image ? socialTitle : t('aicx.logoAlt', getLocaleFromPath(Astro.url.pathname)));
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
@@ -123,7 +128,7 @@ const xDefaultHref = i18nOn ? new URL(xDefaultUrl, Astro.site).toString() : null
 <meta property="og:description" content={description} />
 <meta property="og:site_name" content={siteConfig.name} />
 <meta property="og:locale" content={locale} />
-<meta property="og:image:alt" content={imageAlt || socialTitle} />
+<meta property="og:image:alt" content={ogImageAlt} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 {ogImageType && <meta property="og:image:type" content={ogImageType} />}
@@ -139,6 +144,7 @@ const xDefaultHref = i18nOn ? new URL(xDefaultUrl, Astro.site).toString() : null
 <meta name="twitter:title" content={socialTitle} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image:alt" content={ogImageAlt} />
 {siteConfig.twitter?.site && <meta name="twitter:site" content={siteConfig.twitter.site} />}
 {siteConfig.twitter?.creator && <meta name="twitter:creator" content={siteConfig.twitter.creator} />}
 

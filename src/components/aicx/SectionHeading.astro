@@ -1,0 +1,59 @@
+---
+/**
+ * SectionHeading — the badge, heading and lead that open every AICX section.
+ *
+ * One component so every section opens the same way: the badge names the
+ * section, the heading says what it is about, and the lead is optional.
+ */
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+
+interface Props {
+  badge: string;
+  icon?: string;
+  heading: string;
+  lead?: string;
+  align?: 'center' | 'left';
+  /** Heading level. h2 for page sections; h1 only where a page has no hero. */
+  as?: 'h1' | 'h2';
+  id?: string;
+}
+
+const { badge, icon, heading, lead, align = 'center', as: Tag = 'h2', id } = Astro.props;
+const centered = align === 'center';
+---
+
+<div
+  class:list={[
+    'flex flex-col gap-4',
+    centered ? 'items-center text-center' : 'items-start text-left',
+  ]}
+  data-reveal
+>
+  <Badge variant="brand" pill>
+    {icon && <Icon name={icon} size="sm" />}
+    {badge}
+  </Badge>
+  <Tag
+    id={id}
+    class:list={[
+      'font-display text-foreground text-3xl font-bold tracking-tight text-balance md:text-4xl',
+      centered && 'max-w-3xl',
+    ]}
+  >
+    {heading}
+  </Tag>
+  {
+    lead && (
+      <p
+        class:list={[
+          'text-foreground-muted text-lg leading-relaxed text-balance',
+          centered ? 'max-w-2xl' : 'max-w-xl',
+        ]}
+      >
+        {lead}
+      </p>
+    )
+  }
+  <slot />
+</div>

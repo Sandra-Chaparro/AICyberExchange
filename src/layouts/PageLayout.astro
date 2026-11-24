@@ -24,9 +24,11 @@ interface Props {
    * - last section `bg-background-secondary` → footer `default`
    */
   footerBackground?: 'default' | 'secondary' | 'invert';
+  /** Emit Organization JSON-LD (the home page sets this). */
+  includeOrgSchema?: boolean;
 }
 
-const { title, description, image, imageAlt, noindex, nofollow, showScrollProgress = false, eagerReveal = false, footerBackground = 'default' } = Astro.props;
+const { title, description, image, imageAlt, noindex, nofollow, showScrollProgress = false, eagerReveal = false, footerBackground = 'default', includeOrgSchema = false } = Astro.props;
 
 ---
 
@@ -38,6 +40,7 @@ const { title, description, image, imageAlt, noindex, nofollow, showScrollProgre
   noindex={noindex}
   nofollow={nofollow}
   eagerReveal={eagerReveal}
+  includeOrgSchema={includeOrgSchema}
 >
   <Header
     slot="header"
@@ -46,7 +49,7 @@ const { title, description, image, imageAlt, noindex, nofollow, showScrollProgre
     variant="solid"
     size="lg"
     showActiveState
-    showCta={false}
+    showCta
     showScrollProgress={showScrollProgress}
   />
 
