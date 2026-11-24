@@ -42,7 +42,7 @@
     "test:run": "vitest run"
   },
   "dependencies": {
-    "@astrojs/mdx": "8.0.0",
+    "@astrojs/mdx": "8.1.6",
     "@astrojs/react": "6.0.1",
     "@astrojs/sitemap": "^3.7.3",
     "@astrojs/vercel": "^11.0.0",
@@ -52,7 +52,7 @@
     "@iconify-json/lucide": "^1.2.98",
     "@iconify-json/simple-icons": "^1.2.74",
     "@iconify/react": "^6.0.2",
-    "astro": "7.4.12",
+    "astro": "7.4.13",
     "astro-icon": "^1.1.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -67,7 +67,7 @@
     "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
-    "@astrojs/check": "0.9.9",
+    "@astrojs/check": "0.9.12",
     "@eslint/js": "^9.17.0",
     "@tailwindcss/vite": "^4.3.1",
     "@types/node": "^22.10.0",
