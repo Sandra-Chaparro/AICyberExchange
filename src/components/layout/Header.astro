@@ -238,13 +238,15 @@ const buttonId = `${menuId}-button`;
         ) : (
           <a href={logoHref} class="flex items-center gap-2">
             <Logo size={size === 'sm' ? 'md' : 'lg'} forceDark={isInvert} class="bg-brand-600" />
-            {/* One line at every width: the wordmark never wraps, and it eases
-                20px → 16px between 345px and 320px so it clears the header
-                icons on the smallest screens. From 345px up the clamp
-                resolves to exactly text-xl (20px). */}
+            {/* One line at every width: the wordmark never wraps. Its size is
+                the width left beside the header icons divided by ten, since
+                "AI & Cyber Exchange" runs about ten times its font size, up to
+                text-xl. Below 360px even that does not fit, so the name is
+                visually hidden there and the mark stands alone; screen readers
+                still get the name. */}
             <span
               class={cn(
-                'font-display text-[clamp(1rem,16vw_-_2.2rem,1.25rem)] font-bold tracking-tight whitespace-nowrap',
+                'font-display text-[clamp(13px,calc((100vw_-_205px)/10),1.25rem)] font-bold tracking-tight whitespace-nowrap max-[359px]:sr-only',
                 isFloating ? 'hdr-logo-text' : (isInvert ? 'text-brand-700 dark:text-foreground lg:text-on-invert' : 'text-brand-700 dark:text-foreground')
               )}
             >

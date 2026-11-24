@@ -890,14 +890,14 @@
       "opensInNewTab": "{label} (opens in a new tab)"
     },
     "visual": {
-      "label": "Diagram: companies and technology teams on one side, the community on the other, connected through CyberSaturday sessions.",
+      "label": "Diagram: founders, CEOs and innovators on one side, the community on the other, connected through CyberSaturday sessions.",
       "builders": "Builders",
       "community": "Community",
       "hub": "CyberSaturdays",
       "builderNodes": [
-        "Startups",
-        "Tech teams",
-        "Researchers"
+        "Founders",
+        "CEOs",
+        "Innovators"
       ],
       "communityNodes": [
         "Leaders",
@@ -905,6 +905,6 @@
         "Students"
       ]
     },
-    "logoAlt": "AI & Cyber Exchange logo: a padlock inside a network hexagon, beside the AICX wordmark"
+    "logoAlt": "AI and Cyber Exchange logo: an AC monogram with a shield and padlock, circled by a glowing ring in front of a globe"
   }
 }

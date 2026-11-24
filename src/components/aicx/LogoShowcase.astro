@@ -1,0 +1,59 @@
+---
+/**
+ * LogoShowcase — the full AI & Cyber Exchange logo, shown large on the home
+ * page so visitors can see it properly; the header carries only the small
+ * mark.
+ *
+ * The source is `src/assets/branding/logo.png`. It goes through
+ * `astro:assets`, so the 1.1 MB original is served as resized WebP at the
+ * widths the layout needs. Replace that file to change the logo here.
+ *
+ * The logo is drawn on black, so it sits in a framed panel with a soft brand
+ * glow behind it: on a dark page the frame blends in, and on a light page it
+ * reads as a deliberate card rather than a black rectangle.
+ */
+import { Image } from 'astro:assets';
+import logo from '@/assets/branding/logo.png';
+import { t, defaultLocale } from '@/i18n';
+
+interface Props {
+  locale?: string;
+  /** Load immediately. Set it only where the logo is in the first screen. */
+  eager?: boolean;
+  class?: string;
+}
+
+const { locale = defaultLocale, eager = false, class: className } = Astro.props;
+---
+
+<figure class:list={['hero-logo relative isolate m-0', className]}>
+  <div
+    class="hero-logo-glow pointer-events-none absolute -inset-6 -z-10 rounded-[2.5rem]"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class="border-border overflow-hidden rounded-3xl border shadow-2xl ring-1 ring-black/5 dark:ring-white/5"
+  >
+    <Image
+      src={logo}
+      alt={t('aicx.logoAlt', locale)}
+      widths={[480, 720, 960, 1280, 1672]}
+      sizes="(min-width: 1024px) 460px, (min-width: 640px) 576px, calc(100vw - 48px)"
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : 'auto'}
+      class="block h-auto w-full"
+    />
+  </div>
+</figure>
+
+<style>
+  .hero-logo-glow {
+    background: radial-gradient(
+      ellipse at center,
+      color-mix(in oklch, var(--color-brand-500) 35%, transparent) 0%,
+      transparent 70%
+    );
+    filter: blur(24px);
+  }
+</style>

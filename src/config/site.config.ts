@@ -283,7 +283,7 @@ const siteConfig: SiteConfig = {
   tagline: 'Where AI, cybersecurity, and real-world innovation meet.',
   footerNote: 'Home of CyberSaturdays',
   url: SITE_URL || SITE_URL_FALLBACK,
-  // The full logo, from public/logo.jpeg, scaled to the 1200×630 that link
+  // The full logo, from src/assets/branding/logo.png, scaled to the 1200×630 that link
   // previews (LinkedIn, Slack, X, iMessage) expect. Every page shares it.
   ogImage: '/og-image.jpg',
   author: 'AI & Cyber Exchange',
@@ -383,7 +383,7 @@ const siteConfig: SiteConfig = {
   branding: {
     logo: {
       alt: 'AI & Cyber Exchange',
-      // The icon from public/logo.jpeg, cropped square so it reads at header
+      // The AC monogram from src/assets/branding/logo.png, cropped square so it reads at header
       // size. The full banner, wordmark included, is too wide for the slot.
       image: '/logo-mark.png',
       imageUrl: '/logo-mark.png',
