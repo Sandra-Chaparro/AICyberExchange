@@ -48,5 +48,3 @@ coverage/
 # Claude Code
 .claude/
 
-# npm lockfile (pnpm only)
-package-lock.json

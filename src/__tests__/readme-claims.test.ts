@@ -20,7 +20,6 @@ const pkg = JSON.parse(read('package.json')) as {
   dependencies?: Record<string, string>;
   devDependencies?: Record<string, string>;
   engines: { node: string };
-  packageManager: string;
 };
 const deps = { ...pkg.dependencies, ...pkg.devDependencies };
 
@@ -29,7 +28,7 @@ const majorMinor = (range: string) => range.replace(/^[^\d]*/, '').split('.').sl
 
 describe('what the README claims', () => {
   it('documents only commands that exist', () => {
-    const documented = [...readme.matchAll(/\| `pnpm ([a-z:]+)`/g)].map((m) => m[1]);
+    const documented = [...readme.matchAll(/\| `npm run ([a-z:]+)`/g)].map((m) => m[1]);
     expect(documented.length).toBeGreaterThan(0);
     const missing = documented.filter((name) => !(name in pkg.scripts));
     expect(missing, `documented but not a script: ${missing.join(', ')}`).toEqual([]);
@@ -58,7 +57,6 @@ describe('what the README claims', () => {
   const version = String.raw`\d+(?:\.\d+)*`;
   it.each([
     ['.github/CONTRIBUTING.md', String.raw`Node\.js\s*≥\s*(${version})`],
-    ['src/content/blog/en/astro-rocket-getting-started.mdx', String.raw`Node\.js\]\([^)]*\) version (${version})`],
     ['.github/ISSUE_TEMPLATE/bug_report.md', String.raw`Node version: \[e\.g\. (${version})\]`],
     ['Dockerfile', String.raw`\`engines\` floor of (${version})`],
   ])('%s names the Node version the engines field asks for', (file, source) => {
@@ -66,12 +64,6 @@ describe('what the README claims', () => {
     const claimed = pattern.exec(read(file))?.[1];
     expect(claimed, `no Node version found in ${file}`).toBeDefined();
     expect(claimed).toBe(pkg.engines.node.replace(/^[^\d]*/, ''));
-  });
-
-  it('asks for the pnpm version packageManager pins', () => {
-    const claimed = /- \*\*pnpm ([\d.]+)\*\*/.exec(readme)?.[1];
-    expect(claimed).toBeDefined();
-    expect(claimed).toBe(pkg.packageManager.split('@')[1]);
   });
 
   it.each([

@@ -110,7 +110,7 @@ Use all of it or only the parts you need. The site you build on it is yours.
 ### Prerequisites
 
 - **Node.js 22.23.4+** (required for Astro 7.4)
-- **pnpm 10.33.0** — the version in `packageManager`, which `corepack` installs for you
+- **npm** — the lockfile is `package-lock.json`
 
 ### Installation
 
@@ -120,13 +120,13 @@ git clone https://github.com/hansmartensdev/astro-rocket.git my-project
 cd my-project
 
 # Install dependencies
-pnpm install
+npm install
 
 # Copy environment variables
 cp .env.example .env
 
 # Start development server
-pnpm dev
+npm run dev
 ```
 
 Visit `http://localhost:4321` to see your site.
@@ -144,7 +144,7 @@ docker compose up --build
 The site is then on **http://localhost:4321**. The build runs inside the
 container, which can see this repository and nothing else of yours, and the
 image that serves the site is nginx with the generated files in it — no Node,
-no pnpm, no Astro.
+no npm, no Astro.
 
 To get the built files out instead of serving them:
 
@@ -164,7 +164,7 @@ contact form and newsletter are the theme's only routes that are not
 prerendered — they become a serverless function on a real deploy. In the
 container they answer with an explanation instead, which the form displays.
 Everything else — all pages, search, the colour themes, RSS, the sitemap — is
-the real thing. For a full preview including the forms, use `pnpm dev` or
+the real thing. For a full preview including the forms, use `npm run dev` or
 deploy to Vercel, Netlify or Cloudflare.
 
 
@@ -215,17 +215,17 @@ astro-rocket/
 
 | Command | Description |
 |---------|-------------|
-| `pnpm dev` | Start development server with hot reload |
-| `pnpm build` | Build for production |
-| `pnpm preview` | Preview production build locally |
-| `pnpm check` | Run Astro type checker |
-| `pnpm lint` | Run ESLint |
-| `pnpm lint:fix` | Fix ESLint issues |
-| `pnpm format` | Format code with Prettier |
-| `pnpm format:check` | Check code formatting |
-| `pnpm test` | Run Vitest tests, watching for changes |
-| `pnpm test:run` | Run Vitest once and exit — what CI runs |
-| `pnpm validate` | Everything CI runs: lint, types, tests, build, output check |
+| `npm run dev` | Start development server with hot reload |
+| `npm run build` | Build for production |
+| `npm run preview` | Preview production build locally |
+| `npm run check` | Run Astro type checker |
+| `npm run lint` | Run ESLint |
+| `npm run lint:fix` | Fix ESLint issues |
+| `npm run format` | Format code with Prettier |
+| `npm run format:check` | Check code formatting |
+| `npm run test` | Run Vitest tests, watching for changes |
+| `npm run test:run` | Run Vitest once and exit — what CI runs |
+| `npm run validate` | Everything CI runs: lint, types, tests, build, output check |
 
 ---
 
@@ -888,7 +888,7 @@ Site-wide static search is powered by [Pagefind](https://pagefind.app) and surfa
 The index only exists after a production build, so search has no results under `astro dev` (the modal tells you this instead of failing):
 
 ```bash
-pnpm build && pnpm preview
+npm run build && npm run preview
 ```
 
 **Turning it off**
@@ -949,8 +949,8 @@ Only the Vercel adapter is installed. Netlify and Cloudflare each need theirs
 added first:
 
 ```bash
-pnpm add -D @astrojs/netlify      # for Netlify
-pnpm add -D @astrojs/cloudflare   # for Cloudflare
+npm install -D @astrojs/netlify      # for Netlify
+npm install -D @astrojs/cloudflare   # for Cloudflare
 ```
 
 A site deploys to one platform, so installing all three would mean carrying two
@@ -968,7 +968,7 @@ vercel
 ### Netlify
 
 ```bash
-pnpm add -D @astrojs/netlify
+npm install -D @astrojs/netlify
 netlify deploy --prod
 ```
 
@@ -977,16 +977,16 @@ netlify deploy --prod
 Astro's Cloudflare adapter (`@astrojs/cloudflare`) targets **Cloudflare Workers** (the platform behind today's "Workers & Pages"): the prerendered pages are served as static assets and the `/api/*` routes — the contact form and newsletter — run as the Worker. Build with the Cloudflare target, then deploy with Wrangler:
 
 ```bash
-pnpm add -D @astrojs/cloudflare
-DEPLOY_TARGET=cloudflare pnpm build
+npm install -D @astrojs/cloudflare
+DEPLOY_TARGET=cloudflare npm run build
 npx wrangler deploy
 ```
 
-The build generates the Worker and static-asset config automatically. The bundled `wrangler.toml` deliberately does **not** set `nodejs_compat`: the adapter prerenders every page inside workerd at build time, and that flag makes the prerender emit `[object Object]` instead of HTML for every page, without failing the build. If the contact form or newsletter need Node built-ins once deployed, set the flag on the Worker in the Cloudflare dashboard rather than in `wrangler.toml`. Prefer the dashboard? In **Workers & Pages → Create → Connect to Git**, set the build command to `DEPLOY_TARGET=cloudflare pnpm build`. Either way, add your secrets — `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_AUDIENCE_ID` — plus `SITE_URL` as environment variables so the contact form and newsletter work.
+The build generates the Worker and static-asset config automatically. The bundled `wrangler.toml` deliberately does **not** set `nodejs_compat`: the adapter prerenders every page inside workerd at build time, and that flag makes the prerender emit `[object Object]` instead of HTML for every page, without failing the build. If the contact form or newsletter need Node built-ins once deployed, set the flag on the Worker in the Cloudflare dashboard rather than in `wrangler.toml`. Prefer the dashboard? In **Workers & Pages → Create → Connect to Git**, set the build command to `DEPLOY_TARGET=cloudflare npm run build`. Either way, add your secrets — `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_AUDIENCE_ID` — plus `SITE_URL` as environment variables so the contact form and newsletter work.
 
 ### Static export (no serverless)
 
-`pnpm build` uses the default Vercel adapter and writes the static site to `dist/client/`. You can host that folder on any static host — but the `/api/*` routes (contact form, newsletter) need a serverless/edge runtime, so on a purely static host you'd wire those forms up to an external service instead.
+`npm run build` uses the default Vercel adapter and writes the static site to `dist/client/`. You can host that folder on any static host — but the `/api/*` routes (contact form, newsletter) need a serverless/edge runtime, so on a purely static host you'd wire those forms up to an external service instead.
 
 ### Security headers
 
@@ -1099,7 +1099,7 @@ Astro Rocket builds to a **static site** — plain HTML, CSS, and JavaScript wit
 
 **The only server-side code** is the optional contact and newsletter endpoints (`src/pages/api/`). Both validate input with [Zod](https://zod.dev), use a honeypot against bots, and HTML-escape submitted values before placing them in the notification email. Everything else is prerendered at build time.
 
-**About `pnpm audit`.** An audit will report advisories in the dependency tree. Almost all of them come from the **build-time tooling of the deploy adapters** — Netlify and Cloudflare each bring a large local-development toolchain. That code runs only during `astro build` on your own machine; it is never part of the deployed site and never reaches a visitor.
+**About `npm audit`.** An audit will report advisories in the dependency tree. Almost all of them come from the **build-time tooling of the deploy adapters** — Netlify and Cloudflare each bring a large local-development toolchain. That code runs only during `astro build` on your own machine; it is never part of the deployed site and never reaches a visitor.
 
 **Reporting a security issue.** If you find a real vulnerability in the theme itself, please report it privately — open a [GitHub security advisory](https://github.com/hansmartensdev/Astro-Rocket/security/advisories/new) or email hello@hansmartens.dev — rather than a public issue, so it can be fixed before it's widely known.
 
@@ -1115,7 +1115,7 @@ Contributions are welcome!
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-Please ensure your code passes linting (`pnpm lint`) and type checking (`pnpm check`) before submitting.
+Please ensure your code passes linting (`npm run lint`) and type checking (`npm run check`) before submitting.
 
 ---
 

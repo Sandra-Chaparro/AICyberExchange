@@ -1,7 +1,7 @@
 # Local preview of the built site, in two stages.
 #
 # The build stage installs dependencies and runs `astro build`. The runtime
-# stage is nginx with the generated files copied in — no Node, no pnpm, no
+# stage is nginx with the generated files copied in — no Node, no npm, no
 # Astro, and none of the dependency tree.
 #
 # Two things this is good for:
@@ -9,7 +9,7 @@
 #   Trying the theme without installing anything but Docker. `docker compose
 #   up --build` and the site is on localhost:4321.
 #
-#   Keeping `pnpm install` away from your own machine. Installing a
+#   Keeping `npm install` away from your own machine. Installing a
 #   dependency tree runs other people's install scripts; here they run in a
 #   container that can see this repository and nothing else of yours.
 #
@@ -22,14 +22,10 @@ FROM node:22 AS build
 
 WORKDIR /app
 
-# pnpm comes from the `packageManager` field rather than a version pinned
-# here, so the container, CI and a developer's machine cannot drift apart.
-RUN corepack enable
-
 # Dependency manifests first: this layer is cached until they change, so
 # editing a page does not reinstall the tree.
-COPY package.json pnpm-lock.yaml ./
-RUN corepack install && pnpm install --frozen-lockfile
+COPY package.json package-lock.json ./
+RUN npm ci
 
 COPY . .
 
@@ -68,7 +64,7 @@ ENV PUBLIC_GA_MEASUREMENT_ID=$PUBLIC_GA_MEASUREMENT_ID \
     GOOGLE_SITE_VERIFICATION=$GOOGLE_SITE_VERIFICATION \
     BING_SITE_VERIFICATION=$BING_SITE_VERIFICATION
 
-RUN pnpm run build
+RUN npm run build
 
 # ── Runtime ──────────────────────────────────────────────────────────────────
 FROM nginx:alpine AS runtime

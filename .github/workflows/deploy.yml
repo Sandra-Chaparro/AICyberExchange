@@ -30,18 +30,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      # No version here on purpose: pnpm/action-setup reads `packageManager`
-      # from package.json, so CI, Docker and a developer's machine cannot
-      # drift onto three different pnpm versions.
-      - uses: pnpm/action-setup@f53f5227a9e83886ab598c617f3c170fab62f0d3 # v6
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run lint
-      - run: pnpm run check
-      - run: pnpm run test:run
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run check
+      - run: npm run test:run
 
       # Reported, never blocking. A theme is cloned and then lives in somebody
       # else's repository, so the useful thing is that the number is visible on
@@ -60,11 +56,11 @@ jobs:
             echo
             echo 'Production dependencies:'
             echo '```'
-            pnpm audit --prod 2>&1 | tail -2 || true
+            npm audit --omit=dev 2>&1 | tail -2 || true
             echo '```'
             echo 'Everything, build tooling included:'
             echo '```'
-            pnpm audit 2>&1 | tail -2 || true
+            npm audit 2>&1 | tail -2 || true
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
@@ -110,15 +106,11 @@ jobs:
         target: [vercel, netlify, cloudflare]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      # No version here on purpose: pnpm/action-setup reads `packageManager`
-      # from package.json, so CI, Docker and a developer's machine cannot
-      # drift onto three different pnpm versions.
-      - uses: pnpm/action-setup@f53f5227a9e83886ab598c617f3c170fab62f0d3 # v6
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
+          cache: 'npm'
+      - run: npm ci
 
       # Only the Vercel adapter is a dependency of the theme, so the other two
       # targets install theirs first — the same extra step the README gives a
@@ -126,7 +118,7 @@ jobs:
       # that the documented command is the right one.
       - name: Install the adapter for this target
         if: matrix.target != 'vercel'
-        run: pnpm add -D @astrojs/${{ matrix.target }}
+        run: npm install -D @astrojs/${{ matrix.target }}
 
       # The failure path of the same mechanism, on the one leg that has no
       # extra adapter installed: asking for a target whose adapter is absent
@@ -139,7 +131,7 @@ jobs:
           DEPLOY_TARGET: netlify
           SITE_URL: https://example.com
         run: |
-          if pnpm run build > missing-adapter.log 2>&1; then
+          if npm run build > missing-adapter.log 2>&1; then
             echo "::error::the build succeeded with no Netlify adapter installed"
             exit 1
           fi
@@ -150,14 +142,14 @@ jobs:
           }
 
       - name: Build
-        run: pnpm run build
+        run: npm run build
         env:
           # `vercel` is the default and takes no DEPLOY_TARGET.
           DEPLOY_TARGET: ${{ matrix.target != 'vercel' && matrix.target || '' }}
           SITE_URL: ${{ secrets.SITE_URL || 'https://example.com' }}
 
       - name: Verify the output is a usable site
-        run: pnpm run verify
+        run: npm run verify
 
   # The container is documented in the README, so it has to keep working.
   # Nothing else here would notice it breaking: it is not part of `validate`,
