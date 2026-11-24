@@ -20,7 +20,7 @@ import SectionHeading from '@/components/aicx/SectionHeading.astro';
 import FormatSteps from '@/components/aicx/FormatSteps.astro';
 import AudienceGrid from '@/components/aicx/AudienceGrid.astro';
 import TopicAreas from '@/components/aicx/TopicAreas.astro';
-import CompanyGrid from '@/components/aicx/CompanyGrid.astro';
+import CompanyMarquee from '@/components/aicx/CompanyMarquee.astro';
 import SessionCard from '@/components/aicx/SessionCard.astro';
 import Philosophy from '@/components/aicx/Philosophy.astro';
 import ClosingCta from '@/components/aicx/ClosingCta.astro';
@@ -70,7 +70,7 @@ const url = (path: string) => localizedPath(path, locale);
   title={home.meta.title}
   description={home.meta.description}
   includeOrgSchema
-  footerBackground="default"
+  footerBackground="secondary"
 >
   <!-- Hero -->
   <Hero layout="split" size="lg" class="home-hero isolate" showHeroHalo>
@@ -99,6 +99,26 @@ const url = (path: string) => localizedPath(path, locale);
       <ExchangeDiagram locale={locale} />
     </div>
   </Hero>
+
+  <!-- Companies that have presented -->
+  {
+    companies.length > 0 && (
+      <section class="bg-background border-border border-t py-12 sm:py-16">
+        <div class="mx-auto flex max-w-6xl flex-col gap-8 px-6">
+          <p class="text-foreground-muted text-center text-sm font-medium sm:text-base" data-reveal>
+            {home.companies.strip}{' '}
+            <a
+              href={url('/sessions')}
+              class="text-brand-600 dark:text-brand-400 font-semibold underline-offset-4 hover:underline"
+            >
+              {home.companies.link}
+            </a>
+          </p>
+          <CompanyMarquee companies={companies} locale={locale} label={home.companies.heading} />
+        </div>
+      </section>
+    )
+  }
 
   <!-- What AICX is -->
   <section class="bg-background-secondary border-border border-t py-[var(--space-section-md)]">
@@ -318,38 +338,15 @@ const url = (path: string) => localizedPath(path, locale);
     </div>
   </section>
 
-  <!-- Companies -->
-  {
-    companies.length > 0 && (
-      <section class="bg-background-secondary border-border border-t py-[var(--space-section-md)]">
-        <div class="mx-auto flex max-w-6xl flex-col gap-10 px-6">
-          <SectionHeading
-            badge={home.companies.badge}
-            icon="building-2"
-            heading={home.companies.heading}
-            lead={home.companies.lead}
-          />
-          <CompanyGrid companies={companies} locale={locale} />
-          <div class="flex justify-center" data-reveal>
-            <Button variant="brand-outline" href={url('/sessions')}>
-              {home.companies.link}
-              <Icon name="arrow-right" size="sm" />
-            </Button>
-          </div>
-        </div>
-      </section>
-    )
-  }
-
   <!-- Philosophy -->
-  <section class="bg-background border-border border-t py-[var(--space-section-md)]">
+  <section class="bg-background-secondary border-border border-t py-[var(--space-section-md)]">
     <div class="mx-auto max-w-6xl px-6">
       <Philosophy locale={locale} badge={t('pages.about.philosophy.badge', locale)} />
     </div>
   </section>
 
   <!-- Closing CTA -->
-  <section class="bg-background-secondary border-border border-t py-[var(--space-section-md)]">
+  <section class="bg-background border-border border-t py-[var(--space-section-md)]">
     <ClosingCta
       locale={locale}
       heading={home.cta.heading}

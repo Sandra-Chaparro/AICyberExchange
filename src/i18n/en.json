@@ -288,10 +288,9 @@
         "link": "See all topic areas"
       },
       "companies": {
-        "badge": "Featured companies",
         "heading": "Companies that have presented",
-        "lead": "Companies, startups, and technology teams that have brought their work to a CyberSaturday.",
-        "link": "Past sessions"
+        "link": "See past sessions",
+        "strip": "Companies that have presented at CyberSaturdays."
       },
       "upcoming": {
         "badge": "Next session",

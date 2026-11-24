@@ -1,0 +1,135 @@
+---
+/**
+ * CompanyMarquee — the companies that have presented, as one continuously
+ * sliding line of names.
+ *
+ * Names rather than logos, for the same reason as CompanyGrid: a logo needs
+ * the company's permission. Each name links to the company's site when its
+ * session entry has a `companyUrl`.
+ *
+ * Pure CSS: the list is repeated until one copy is wider than any screen,
+ * then the whole run is duplicated and the track slides by exactly half its
+ * width, so the loop has no visible seam. The duplicate is hidden from screen
+ * readers, which get the list once. The line pauses while hovered or focused,
+ * and stops for visitors who ask for reduced motion, wrapping instead so every
+ * name is still visible.
+ */
+import { t, defaultLocale } from '@/i18n';
+import type { Session } from '@/lib/sessions';
+
+interface Props {
+  companies: Session[];
+  locale?: string;
+  /** Seconds for one full loop. Higher is slower. */
+  duration?: number;
+  /** Accessible name for the list. */
+  label: string;
+}
+
+const { companies, locale = defaultLocale, duration = 40, label } = Astro.props;
+
+// Repeat the set so one copy spans a wide screen even with only a few names.
+const repeats = Math.max(1, Math.ceil(12 / Math.max(companies.length, 1)));
+const run = Array.from({ length: repeats }, () => companies).flat();
+---
+
+<div
+  class="company-marquee group relative overflow-hidden"
+  style={`--marquee-duration: ${duration}s`}
+>
+  <div class="company-marquee-track flex w-max">
+    {
+      [0, 1].map((copy) => (
+        <ul
+          class="flex shrink-0 items-center"
+          aria-label={copy === 0 ? label : undefined}
+          aria-hidden={copy === 1 ? 'true' : undefined}
+        >
+          {run.map((s, i) => {
+            const repeated = copy === 1 || i >= companies.length;
+            const url = s.data.companyUrl;
+            const name = (
+              <span class="font-display text-foreground-muted group-hover:text-foreground/70 text-xl font-semibold tracking-tight whitespace-nowrap transition-colors sm:text-2xl">
+                {s.data.company}
+              </span>
+            );
+            return (
+              <li
+                class="flex items-center"
+                aria-hidden={repeated && copy === 0 ? 'true' : undefined}
+              >
+                {url ? (
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    tabindex={repeated ? -1 : undefined}
+                    aria-label={t('aicx.session.opensInNewTab', locale, { label: s.data.company })}
+                    class="hover:[&>span]:text-foreground"
+                  >
+                    {name}
+                  </a>
+                ) : (
+                  name
+                )}
+                <span class="company-marquee-dot mx-8 sm:mx-12" aria-hidden="true" />
+              </li>
+            );
+          })}
+        </ul>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .company-marquee {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  }
+  .company-marquee-track {
+    animation: company-marquee var(--marquee-duration, 40s) linear infinite;
+  }
+  .company-marquee:hover .company-marquee-track,
+  .company-marquee:focus-within .company-marquee-track {
+    animation-play-state: paused;
+  }
+  @keyframes company-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  .company-marquee-dot {
+    width: 6px;
+    height: 6px;
+    flex-shrink: 0;
+    rotate: 45deg;
+    background: color-mix(in oklch, var(--color-brand-500) 70%, transparent);
+  }
+
+  /* Reduced motion: no sliding. Show each name once, wrapped and centred. */
+  @media (prefers-reduced-motion: reduce) {
+    .company-marquee {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+    .company-marquee-track {
+      animation: none;
+      width: auto;
+      justify-content: center;
+    }
+    .company-marquee-track > ul {
+      flex-wrap: wrap;
+      justify-content: center;
+      row-gap: 1rem;
+      flex-shrink: 1;
+    }
+    .company-marquee-track > ul[aria-hidden='true'],
+    .company-marquee-track li[aria-hidden='true'] {
+      display: none;
+    }
+  }
+</style>
